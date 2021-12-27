@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "84461762791",
+    "firebase_url": "https://angelsnails-a8dc1-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "angelsnails-a8dc1",
+    "storage_bucket": "angelsnails-a8dc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84461762791:android:e2466caef902124d3c0a42",
+        "android_client_info": {
+          "package_name": "com.marinanitockina.angelsnails"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84461762791-jgeqpunn320e4k4ud6b5ubrtfv569cjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoPoFuUWPiMrAxDM7s5VuqTETRBEeohPg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84461762791-jgeqpunn320e4k4ud6b5ubrtfv569cjn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
