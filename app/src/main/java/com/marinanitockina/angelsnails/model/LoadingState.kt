@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails
+package com.marinanitockina.angelsnails.model
 
 data class LoadingState constructor(val status: Status, val msg: String? = null) {
 
