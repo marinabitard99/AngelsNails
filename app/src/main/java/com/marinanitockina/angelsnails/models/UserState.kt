@@ -8,7 +8,7 @@ data class UserState(
 ) {
 
     enum class Role {
-        USER,
+        CLIENT,
         MASTER,
         ADMIN
     }

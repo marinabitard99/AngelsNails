@@ -25,7 +25,7 @@ class UserViewModel : ViewModel() {
             val role = when (user?.role) {
                 "master" -> UserState.Role.MASTER
                 "admin" -> UserState.Role.ADMIN
-                else -> UserState.Role.USER
+                else -> UserState.Role.CLIENT
             }
 
             accountState.value = UserState(FirebaseAuth.getInstance().currentUser!!, role)
