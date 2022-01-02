@@ -22,3 +22,7 @@
 
 -keepattributes Signature
 -keepattributes *Annotation*
+
+-keepclassmembers class com.marinanitockina.angelsnails.models.** {
+  *;
+}

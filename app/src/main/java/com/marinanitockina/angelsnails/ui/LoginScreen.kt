@@ -26,13 +26,13 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.marinanitockina.angelsnails.AppViewModel
 import com.marinanitockina.angelsnails.R
-import com.marinanitockina.angelsnails.model.LoadingState
+import com.marinanitockina.angelsnails.data.UserViewModel
+import com.marinanitockina.angelsnails.models.LoadingState
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 
 @Composable
-fun LoginScreen(viewModel: AppViewModel) {
+fun LoginScreen(viewModel: UserViewModel) {
 
     val snackbarHostState = remember { SnackbarHostState() }
     val state by viewModel.loadingState.collectAsState()
@@ -81,7 +81,7 @@ fun LoginToolbar(state: LoadingState) {
 }
 
 @Composable
-fun EmailPasswordSignIn(viewModel: AppViewModel, state: LoadingState) {
+fun EmailPasswordSignIn(viewModel: UserViewModel, state: LoadingState) {
 
     var userEmail by remember { mutableStateOf("") }
     var userPassword by remember { mutableStateOf("") }
@@ -144,7 +144,7 @@ fun EmailPasswordSignIn(viewModel: AppViewModel, state: LoadingState) {
 }
 
 @Composable
-fun GoogleSignInButton(viewModel: AppViewModel, state: LoadingState) {
+fun GoogleSignInButton(viewModel: UserViewModel, state: LoadingState) {
     val context = LocalContext.current
     val token = stringResource(R.string.default_web_client_id)
 
@@ -218,7 +218,7 @@ fun GoogleSignInButton(viewModel: AppViewModel, state: LoadingState) {
 @Composable
 fun RegularSignInPreview() {
     AngelsNailsTheme {
-        EmailPasswordSignIn(viewModel = AppViewModel(), LoadingState.IDLE)
+        EmailPasswordSignIn(viewModel = UserViewModel(), LoadingState.IDLE)
     }
 }
 
@@ -226,6 +226,6 @@ fun RegularSignInPreview() {
 @Composable
 fun GoogleButtonPreview() {
     AngelsNailsTheme {
-        GoogleSignInButton(viewModel = AppViewModel(),  LoadingState.IDLE)
+        GoogleSignInButton(viewModel = UserViewModel(),  LoadingState.IDLE)
     }
 }

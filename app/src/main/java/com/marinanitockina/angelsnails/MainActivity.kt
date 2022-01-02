@@ -7,35 +7,40 @@ import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import com.marinanitockina.angelsnails.ui.BookingScreen
+import com.google.firebase.auth.FirebaseAuth
+import com.marinanitockina.angelsnails.data.UserViewModel
 import com.marinanitockina.angelsnails.ui.LoginScreen
+import com.marinanitockina.angelsnails.ui.SignedInScreen
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<AppViewModel>()
+    private val viewModel by viewModels<UserViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseAuth.getInstance().addAuthStateListener {
+            viewModel.fetchUserRole()
+        }
+
         setContent {
             AngelsNailsTheme {
                     AppScreen(viewModel = viewModel)
                 }
             }
         }
+
     }
 
 @Composable
-fun AppScreen(viewModel: AppViewModel) {
+fun AppScreen(viewModel: UserViewModel) {
     Surface(color = MaterialTheme.colors.background) {
         val currentUser = viewModel.accountState.value
         if (currentUser == null) {
             LoginScreen(viewModel = viewModel)
         } else {
-            BookingScreen(
-                currentUser.account,
-                currentUser.role
-            )
+            SignedInScreen(userState = currentUser)
         }
     }
 }
