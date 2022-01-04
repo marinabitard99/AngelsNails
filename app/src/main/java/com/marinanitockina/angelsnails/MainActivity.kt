@@ -1,6 +1,7 @@
 package com.marinanitockina.angelsnails
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -20,18 +21,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        FirebaseAuth.getInstance().addAuthStateListener {
-            viewModel.fetchUserRole()
+        FirebaseAuth.getInstance().addAuthStateListener { auth ->
+            Log.d("Auth changed", auth.currentUser?.email ?: "null")
+            auth.currentUser?.email?.let { it ->
+                viewModel.fetchUserRole(it)
+            }
         }
 
         setContent {
             AngelsNailsTheme {
-                    AppScreen(viewModel = viewModel)
-                }
+                AppScreen(viewModel = viewModel)
             }
         }
-
     }
+
+}
 
 @Composable
 fun AppScreen(viewModel: UserViewModel) {
@@ -40,7 +44,7 @@ fun AppScreen(viewModel: UserViewModel) {
         if (currentUser == null) {
             LoginScreen(viewModel = viewModel)
         } else {
-            SignedInScreen(userState = currentUser)
+            SignedInScreen(userState = currentUser, services = viewModel.serviceState)
         }
     }
 }

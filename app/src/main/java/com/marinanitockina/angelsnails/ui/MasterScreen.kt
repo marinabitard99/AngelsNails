@@ -1,9 +1,10 @@
 package com.marinanitockina.angelsnails.ui
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 
 @Composable
 fun MasterScreen() {
-    TODO("Not yet implemented")
+    Text("Hi master")
 }
