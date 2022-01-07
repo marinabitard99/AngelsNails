@@ -61,8 +61,12 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'androidx.activity:activity-compose:1.4.0'
-
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
+
+    /**
+     * Glide
+     */
+    implementation "com.github.skydoves:landscapist-glide:1.4.5"
 
     /**
      * Firebase
@@ -74,7 +78,7 @@ dependencies {
     /**
      * Play services
      */
-    implementation 'com.google.android.gms:play-services-auth:20.0.0'
+    implementation 'com.google.android.gms:play-services-auth:20.0.1'
 
     /**
      * Tests
