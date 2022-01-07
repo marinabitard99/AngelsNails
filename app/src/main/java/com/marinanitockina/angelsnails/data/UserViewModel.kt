@@ -37,6 +37,7 @@ class UserViewModel : ViewModel() {
             accountState.value = UserState(FirebaseAuth.getInstance().currentUser!!, role)
         }
         repository.servicesCallback = { serviceList ->
+            serviceState.clear()
             serviceList.forEach {
                 serviceState.add(it!!)
             }
