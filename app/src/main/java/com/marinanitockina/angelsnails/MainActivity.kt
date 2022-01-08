@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import com.marinanitockina.angelsnails.ui.LoginScreen
 import com.marinanitockina.angelsnails.ui.SignedInScreen
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 
+@ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<UserViewModel>()
@@ -37,6 +39,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
+@ExperimentalFoundationApi
 @Composable
 fun AppScreen(viewModel: UserViewModel) {
     Surface(color = MaterialTheme.colors.background) {
