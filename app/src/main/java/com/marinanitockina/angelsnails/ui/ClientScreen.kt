@@ -42,20 +42,26 @@ fun ClientScreen(userState: UserState, services: List<Service>) {
             )
         }
     ) {
-        CompositionLocalProvider(
-            LocalOverScrollConfiguration provides null
+        ServiceList(services = services)
+    }
+}
+
+@ExperimentalFoundationApi
+@Composable
+fun ServiceList(services: List<Service> = emptyList()) {
+    CompositionLocalProvider(
+        LocalOverScrollConfiguration provides null
+    ) {
+        LazyColumn(
+            modifier = Modifier.padding(
+                start = 10.dp,
+                end = 10.dp,
+                top = 16.dp,
+                bottom = 2.dp
+            ),
         ) {
-            LazyColumn(
-                modifier = Modifier.padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 16.dp,
-                    bottom = 2.dp
-                ),
-            ) {
-                items(items = services) { service ->
-                    ServiceItem(service = service)
-                }
+            items(items = services) { service ->
+                ServiceItem(service = service)
             }
         }
     }
@@ -98,8 +104,8 @@ fun ServiceItem(service: Service) {
 @Preview("ServiceList")
 @Composable
 fun ServiceListPreview() {
-    ClientScreen(
-        userState = UserState(null, UserState.Role.CLIENT), services = listOf(
+    ServiceList(
+        services = listOf(
             Service(
                 "Massage",
                 "38.20€",
