@@ -7,43 +7,91 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 import com.marinanitockina.angelsnails.R
 import com.marinanitockina.angelsnails.models.Service
 import com.marinanitockina.angelsnails.models.UserState
+import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
 @Composable
 fun ClientScreen(userState: UserState, services: List<Service>) {
+
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterTopAppBar(
                 title = {
-                    Text(text = "Services")
-                },
-                navigationIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(imageVector = Icons.Filled.Menu, contentDescription = "Menu Btn")
-                    }
+                    Text(text = "Welcome, ${userState.account?.displayName ?: "Welcome back"}!  ")
                 },
                 contentColor = DarkPink,
-                elevation = 2.dp
+                elevation = 0.dp,
             )
         }
     ) {
-        ServiceList(services = services)
+        val pagerState = rememberPagerState()
+        val pages = listOf("My Records", "Book a Service")
+        val scope = rememberCoroutineScope()
+
+        Column {
+            TabRow(
+                selectedTabIndex = pagerState.currentPage,
+                indicator = { tabPositions ->
+                    TabRowDefaults.Indicator(
+                        modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                        color = DarkPink
+                    )
+                }
+            ) {
+                // Add tabs for all of our pages
+                pages.forEachIndexed { index, title ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = title,
+                                color = DarkPink,
+                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.h6
+                            )
+                        },
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            scope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                    )
+                }
+            }
+
+            HorizontalPager(
+                count = pages.size,
+                state = pagerState,
+            ) { page ->
+                when (page) {
+                    0 -> Text("Hello content")
+                    1 -> ServiceList(services = services)
+                }
+            }
+
+
+        }
+
     }
+
 }
 
 @ExperimentalFoundationApi
@@ -98,6 +146,33 @@ fun ServiceItem(service: Service) {
 
     Spacer(modifier = Modifier.height(14.dp))
 
+}
+
+@ExperimentalFoundationApi
+@Preview("ClientScreen")
+@Composable
+fun ClientScreenPreview() {
+    AngelsNailsTheme {
+        ClientScreen(
+            userState = UserState(null, UserState.Role.CLIENT), listOf(
+                Service(
+                    "Massage",
+                    "38.20€",
+                    "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                ),
+                Service(
+                    "Massage",
+                    "38.20€",
+                    "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                ),
+                Service(
+                    "Massage",
+                    "38.20€",
+                    "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                )
+            )
+        )
+    }
 }
 
 @ExperimentalFoundationApi
