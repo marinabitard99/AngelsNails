@@ -12,7 +12,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -126,11 +125,8 @@ fun ServiceItem(service: Service) {
                     .height(140.dp),
                 previewPlaceholder = R.drawable.cat
             )
-            Text(
+            Chip(
                 text = service.name ?: "",
-                color = DarkPink,
-                fontFamily = FontFamily.Serif,
-                fontSize = 20.sp,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(10.dp)
