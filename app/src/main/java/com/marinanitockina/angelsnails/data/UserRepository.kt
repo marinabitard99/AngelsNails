@@ -1,7 +1,10 @@
 package com.marinanitockina.angelsnails.data
 
 import android.util.Log
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.marinanitockina.angelsnails.models.Service
@@ -12,8 +15,7 @@ class UserRepository {
     private val database: DatabaseReference = Firebase.database.reference
 
     fun getUserInfo(email: String) {
-        val query = FirebaseDatabase.getInstance()
-            .getReference("staff")
+        val query = database.child("staff")
             .orderByChild("email")
             .equalTo(email)
 
@@ -37,7 +39,7 @@ class UserRepository {
 
     fun getServices() {
         val serviceList = mutableMapOf<String, Service>()
-        val query = FirebaseDatabase.getInstance().getReference("services")
+        val query = database.child("services")
 
         query.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
