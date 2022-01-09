@@ -1,6 +1,6 @@
 package com.marinanitockina.angelsnails.ui
 
-import android.view.MotionEvent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
@@ -13,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,7 +32,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
 @Composable
-fun ClientScreen(userState: UserState, services: List<Service>) {
+fun ClientScreen(userState: UserState, services: Map<String, Service>) {
 
     Scaffold(
         topBar = {
@@ -100,7 +99,7 @@ fun ClientScreen(userState: UserState, services: List<Service>) {
 
 @ExperimentalFoundationApi
 @Composable
-fun ServiceList(services: List<Service> = emptyList()) {
+fun ServiceList(services: Map<String, Service> = emptyMap()) {
     CompositionLocalProvider(
         LocalOverScrollConfiguration provides null
     ) {
@@ -112,7 +111,7 @@ fun ServiceList(services: List<Service> = emptyList()) {
                 bottom = 2.dp
             ),
         ) {
-            items(items = services) { service ->
+            items(items = services.values.toList()) { service ->
                 ServiceItem(service = service)
             }
         }
@@ -122,28 +121,16 @@ fun ServiceList(services: List<Service> = emptyList()) {
 @Composable
 fun ServiceItem(service: Service) {
 
-    val tapped = remember { mutableStateOf(false) }
-    val scale = animateFloatAsState(if (tapped.value) 0.95f else 1f)
+    val extended = remember { mutableStateOf(false) }
+    val scale = animateFloatAsState(if (extended.value) 0.95f else 1f)
 
     Card(shape = RoundedCornerShape(25.dp),
         modifier = Modifier
-            .scale(scale.value)
-            .pointerInteropFilter {
-                when (it.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        tapped.value = true
-                        true
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        tapped.value = false
-                        true
-                    }
-                    else -> {
-                        tapped.value = false
-                        true
-                    }
-                }
-            }) {
+            .scale(scale.value),
+        onClick = {
+            extended.value = !extended.value
+        }
+    ) {
         Box {
             GlideImage(
                 imageModel = service.pictureUrl,
@@ -174,6 +161,14 @@ fun ServiceItem(service: Service) {
         }
     }
 
+    AnimatedVisibility(visible = extended.value) {
+        LazyColumn(modifier = Modifier.height((service.masters.size * 30).dp)) {
+            items(items = service.masters.toList()) { master ->
+                Text(master.toString())
+            }
+        }
+    }
+
     Spacer(modifier = Modifier.height(14.dp))
 
 }
@@ -184,21 +179,27 @@ fun ServiceItem(service: Service) {
 fun ClientScreenPreview() {
     AngelsNailsTheme {
         ClientScreen(
-            userState = UserState(null, UserState.Role.CLIENT), listOf(
-                Service(
-                    "Massage",
-                    "38.20€",
-                    "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+            userState = UserState(null, UserState.Role.CLIENT), mapOf(
+                Pair(
+                    "a", Service(
+                        "Massage",
+                        "38.20€",
+                        "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                    )
                 ),
-                Service(
-                    "Massage",
-                    "38.20€",
-                    "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                Pair(
+                    "b", Service(
+                        "Massage",
+                        "38.20€",
+                        "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                    )
                 ),
-                Service(
-                    "Massage",
-                    "38.20€",
-                    "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                Pair(
+                    "c", Service(
+                        "Massage",
+                        "38.20€",
+                        "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                    )
                 )
             )
         )
@@ -210,21 +211,27 @@ fun ClientScreenPreview() {
 @Composable
 fun ServiceListPreview() {
     ServiceList(
-        services = listOf(
-            Service(
-                "Massage",
-                "38.20€",
-                "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+        services = mapOf(
+            Pair(
+                "a", Service(
+                    "Massage",
+                    "38.20€",
+                    "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                )
             ),
-            Service(
-                "Massage",
-                "38.20€",
-                "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+            Pair(
+                "b", Service(
+                    "Massage",
+                    "38.20€",
+                    "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                )
             ),
-            Service(
-                "Massage",
-                "38.20€",
-                "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+            Pair(
+                "c", Service(
+                    "Massage",
+                    "38.20€",
+                    "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+                )
             )
         )
     )

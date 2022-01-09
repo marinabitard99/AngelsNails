@@ -36,7 +36,7 @@ class UserRepository {
     }
 
     fun getServices() {
-        val serviceList = mutableListOf<Service>()
+        val serviceList = mutableMapOf<String, Service>()
         val query = FirebaseDatabase.getInstance().getReference("services")
 
         query.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -45,7 +45,7 @@ class UserRepository {
                     snapshot.children.forEach { child ->
                         val service = child.getValue(Service::class.java)
                         service?.let {
-                            serviceList.add(it)
+                            serviceList[child.key!!] = it
                         }
                     }
                     servicesCallback(serviceList)
@@ -60,6 +60,6 @@ class UserRepository {
     }
 
     var userCallback: (User?) -> Unit = {}
-    var servicesCallback: (List<Service?>) -> Unit = {}
+    var servicesCallback: (Map<String, Service?>) -> Unit = {}
 
 }

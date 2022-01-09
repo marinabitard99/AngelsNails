@@ -1,7 +1,7 @@
 package com.marinanitockina.angelsnails.data
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +21,7 @@ class UserViewModel : ViewModel() {
     val loadingState = MutableStateFlow(LoadingState.IDLE)
     var accountState: MutableState<UserState?> = mutableStateOf(null)
         private set
-    var serviceState = mutableStateListOf<Service>()
+    var serviceState = mutableStateMapOf<String, Service>()
 
     init {
         repository.userCallback = { user ->
@@ -39,7 +39,7 @@ class UserViewModel : ViewModel() {
         repository.servicesCallback = { serviceList ->
             serviceState.clear()
             serviceList.forEach {
-                serviceState.add(it!!)
+                serviceState[it.key] = it.value!!
             }
         }
     }
