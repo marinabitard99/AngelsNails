@@ -1,5 +1,7 @@
 package com.marinanitockina.angelsnails.ui
 
+import android.view.MotionEvent
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.*
@@ -7,11 +9,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -119,7 +121,29 @@ fun ServiceList(services: List<Service> = emptyList()) {
 
 @Composable
 fun ServiceItem(service: Service) {
-    Card(shape = RoundedCornerShape(25.dp)) {
+
+    val tapped = remember { mutableStateOf(false) }
+    val scale = animateFloatAsState(if (tapped.value) 0.95f else 1f)
+
+    Card(shape = RoundedCornerShape(25.dp),
+        modifier = Modifier
+            .scale(scale.value)
+            .pointerInteropFilter {
+                when (it.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        tapped.value = true
+                        true
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        tapped.value = false
+                        true
+                    }
+                    else -> {
+                        tapped.value = false
+                        true
+                    }
+                }
+            }) {
         Box {
             GlideImage(
                 imageModel = service.pictureUrl,
