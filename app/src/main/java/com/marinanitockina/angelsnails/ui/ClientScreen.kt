@@ -23,6 +23,9 @@ import com.marinanitockina.angelsnails.models.Service
 import com.marinanitockina.angelsnails.models.UserState
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
+import com.marinanitockina.angelsnails.ui.theme.Pink100
+import com.marinanitockina.angelsnails.ui.theme.Pink50
+import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
 
@@ -123,6 +126,13 @@ fun ServiceItem(service: Service) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp),
+                shimmerParams = ShimmerParams(
+                    baseColor = Pink50,
+                    highlightColor = Pink100,
+                    durationMillis = 1000,
+                    dropOff = 0.65f,
+                    tilt = 20f
+                ),
                 previewPlaceholder = R.drawable.cat
             )
             Chip(
