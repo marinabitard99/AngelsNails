@@ -7,12 +7,15 @@ import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,6 +24,7 @@ import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.marinanitockina.angelsnails.R
 import com.marinanitockina.angelsnails.models.Service
+import com.marinanitockina.angelsnails.models.ServiceMaster
 import com.marinanitockina.angelsnails.models.UserState
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
@@ -162,15 +166,56 @@ fun ServiceItem(service: Service) {
     }
 
     AnimatedVisibility(visible = extended.value) {
-        LazyColumn(modifier = Modifier.height((service.masters.size * 30).dp)) {
-            items(items = service.masters.toList()) { master ->
-                Text(master.second.name!!)
+        Column() {
+            Text("Masters")
+            Box(
+                modifier = Modifier
+                    .height((service.masters.size * 60).dp)
+                    .fillMaxWidth(0.9f),
+            ) {
+                LazyColumn(modifier = Modifier.align(Alignment.Center)) {
+                    items(items = service.masters.toList()) { master ->
+                        MasterCard(master = master.second)
+                    }
+                }
             }
         }
     }
 
     Spacer(modifier = Modifier.height(14.dp))
 
+}
+
+@Composable
+fun MasterCard(master: ServiceMaster = ServiceMaster()) {
+    Card(
+        onClick = { /*TODO*/ },
+        shape = RoundedCornerShape(100.dp),
+        modifier = Modifier
+            .height(60.dp)
+            .padding(vertical = 4.dp)
+            .fillMaxSize(),
+        elevation = 2.dp,
+        backgroundColor = Color.White
+    ) {
+        Row(
+            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            GlideImage(
+                imageModel = master.pictureUrl,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .aspectRatio(1f)
+                    .clip(CircleShape)
+            )
+            Text(
+                master.name!!,
+                modifier = Modifier.align(Alignment.CenterVertically),
+                style = MaterialTheme.typography.body1
+            )
+        }
+    }
 }
 
 @ExperimentalFoundationApi
