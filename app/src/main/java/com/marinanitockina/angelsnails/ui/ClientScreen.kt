@@ -182,15 +182,9 @@ fun ServiceItem(service: Service) {
                 color = DarkPink,
                 modifier = Modifier.padding(start = 9.dp)
             )
-            Box(
-                modifier = Modifier
-                    .height((service.masters.size * 70).dp)
-                    .fillMaxWidth(0.9f),
-            ) {
-                LazyColumn(modifier = Modifier.align(Alignment.Center)) {
-                    items(items = service.masters.toList()) { master ->
-                        MasterCard(master = master.second)
-                    }
+            LazyColumn(modifier = Modifier.height((service.masters.size * 70).dp)) {
+                items(items = service.masters.toList()) { master ->
+                    MasterCard(master = master.second)
                 }
             }
         }
@@ -206,8 +200,8 @@ fun MasterCard(master: ServiceMaster = ServiceMaster()) {
         shape = RoundedCornerShape(100.dp),
         modifier = Modifier
             .height(70.dp)
-            .padding(vertical = 4.dp)
-            .fillMaxSize(),
+            .fillMaxWidth()
+            .padding(vertical = 4.dp, horizontal = 9.dp),
         elevation = 2.dp,
         backgroundColor = Color.White
     ) {
