@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -156,7 +158,7 @@ fun ServiceItem(service: Service) {
             Chip(
                 text = service.name ?: "",
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
+                    .align(Alignment.TopStart)
                     .padding(10.dp)
             )
             Chip(
@@ -173,11 +175,16 @@ fun ServiceItem(service: Service) {
         enter = expandVertically(),
         exit = shrinkVertically()
     ) {
-        Column() {
-            Text("Masters")
+        Column {
+            Text(
+                text = "Choose a master for ${service.name?.lowercase()}",
+                style = MaterialTheme.typography.h6,
+                color = DarkPink,
+                modifier = Modifier.padding(start = 9.dp)
+            )
             Box(
                 modifier = Modifier
-                    .height((service.masters.size * 60).dp)
+                    .height((service.masters.size * 70).dp)
                     .fillMaxWidth(0.9f),
             ) {
                 LazyColumn(modifier = Modifier.align(Alignment.Center)) {
@@ -196,10 +203,9 @@ fun ServiceItem(service: Service) {
 @Composable
 fun MasterCard(master: ServiceMaster = ServiceMaster()) {
     Card(
-        onClick = { /*TODO*/ },
         shape = RoundedCornerShape(100.dp),
         modifier = Modifier
-            .height(60.dp)
+            .height(70.dp)
             .padding(vertical = 4.dp)
             .fillMaxSize(),
         elevation = 2.dp,
@@ -209,19 +215,39 @@ fun MasterCard(master: ServiceMaster = ServiceMaster()) {
             modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            GlideImage(
-                imageModel = master.pictureUrl,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .aspectRatio(1f)
-                    .clip(CircleShape)
-                    .border(2.dp, DarkPink, CircleShape)
-            )
-            Text(
-                master.name!!,
+
+            Row {
+                GlideImage(
+                    imageModel = master.pictureUrl,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .aspectRatio(1f)
+                        .clip(CircleShape)
+                        .border(1.dp, DarkPink, CircleShape)
+                )
+                Text(
+                    master.name!!,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(start = 10.dp),
+                    style = MaterialTheme.typography.body1
+                )
+            }
+
+            OutlinedButton(
+                onClick = { /*TODO*/ },
+                shape = RoundedCornerShape(25.dp),
                 modifier = Modifier.align(Alignment.CenterVertically),
-                style = MaterialTheme.typography.body1
-            )
+                colors = ButtonDefaults.buttonColors(backgroundColor = Pink100),
+                border = BorderStroke(1.dp, DarkPink)
+            ) {
+                Text(
+                    text = "SELECT",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    color = DarkPink
+                )
+            }
         }
     }
 }
