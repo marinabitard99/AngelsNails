@@ -66,7 +66,7 @@ fun ClientScreen(userState: UserState, services: Map<String, Service?>) {
                             Text(
                                 text = title,
                                 color = DarkPink,
-                                fontSize = 16.sp,
+                                fontSize = 18.sp,
                                 style = MaterialTheme.typography.h6
                             )
                         },

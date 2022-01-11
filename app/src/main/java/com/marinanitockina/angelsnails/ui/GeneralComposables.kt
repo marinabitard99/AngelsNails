@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.marinanitockina.angelsnails.ui.theme.Pink100
 
@@ -31,6 +32,7 @@ fun Chip(
         Text(
             text = text,
             style = MaterialTheme.typography.body2,
+            fontSize = 16.sp,
             color = DarkPink,
             modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp)
         )
