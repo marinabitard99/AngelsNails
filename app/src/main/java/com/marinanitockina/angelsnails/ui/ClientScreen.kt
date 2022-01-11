@@ -2,7 +2,10 @@ package com.marinanitockina.angelsnails.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -165,7 +168,11 @@ fun ServiceItem(service: Service) {
         }
     }
 
-    AnimatedVisibility(visible = extended.value) {
+    AnimatedVisibility(
+        visible = extended.value,
+        enter = expandVertically(),
+        exit = shrinkVertically()
+    ) {
         Column() {
             Text("Masters")
             Box(
@@ -208,6 +215,7 @@ fun MasterCard(master: ServiceMaster = ServiceMaster()) {
                     .align(Alignment.CenterVertically)
                     .aspectRatio(1f)
                     .clip(CircleShape)
+                    .border(2.dp, DarkPink, CircleShape)
             )
             Text(
                 master.name!!,
