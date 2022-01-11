@@ -45,12 +45,12 @@ class UserViewModel : ViewModel() {
 
         repository.serviceMastersCallback = { masterList ->
             serviceState.forEach { service ->
-                service.value?.masterIds?.forEach { masterFromList ->
+                service.value?.masterIds?.forEach { masterIdFromService ->
                     masterList.forEach { receivedMaster ->
-                        if (masterFromList.key == receivedMaster.key)
+                        if (masterIdFromService.key == receivedMaster.key)
                             service.value?.masters?.put(
-                                masterFromList.key,
-                                masterList.getValue(masterFromList.key)!!
+                                masterIdFromService.key,
+                                masterList.getValue(masterIdFromService.key)!!
                             )
                     }
                 }
