@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.marinanitockina.angelsnails.models.Record
 import com.marinanitockina.angelsnails.models.Service
 import com.marinanitockina.angelsnails.models.ServiceMaster
 import com.marinanitockina.angelsnails.models.User
@@ -87,8 +88,34 @@ class UserRepository {
         })
     }
 
+    fun getUserRecords(email: String) {
+        val recordsList = mutableMapOf<String, Record?>()
+        val query = database.child("records").orderByChild("email").equalTo(email)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { child ->
+                        val record = child.getValue(Record::class.java)
+                        record?.let {
+                            recordsList[child.key!!] = it
+                        }
+                    }
+                    userRecordsCallback(recordsList)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("Ohsnap", "loadPost:onCancelled", error.toException())
+            }
+        })
+
+
+    }
+
     var userCallback: (User?) -> Unit = {}
     var servicesCallback: (Map<String, Service?>) -> Unit = {}
     var serviceMastersCallback: (Map<String, ServiceMaster?>) -> Unit = {}
+    var userRecordsCallback: (Map<String, Record?>) -> Unit = {}
 
 }

@@ -28,6 +28,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.marinanitockina.angelsnails.R
+import com.marinanitockina.angelsnails.models.Record
 import com.marinanitockina.angelsnails.models.Service
 import com.marinanitockina.angelsnails.models.ServiceMaster
 import com.marinanitockina.angelsnails.models.UserState
@@ -38,16 +39,24 @@ import com.marinanitockina.angelsnails.ui.theme.Pink50
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 @ExperimentalFoundationApi
 @Composable
-fun ClientScreen(userState: UserState, services: Map<String, Service?>) {
+fun ClientScreen(
+    userState: UserState,
+    records: Map<String, Record?> = emptyMap(),
+    services: Map<String, Service?> = emptyMap()
+) {
 
     Scaffold(
         topBar = {
             CenterTopAppBar(
                 title = {
-                    Text(text = "Welcome, ${userState.account?.displayName ?: "Welcome back"}!  ")
+                    Text(text = "Welcome, ${userState.account?.displayName ?: "Welcome back"}!")
                 },
                 contentColor = DarkPink,
                 elevation = 0.dp,
@@ -92,9 +101,10 @@ fun ClientScreen(userState: UserState, services: Map<String, Service?>) {
             HorizontalPager(
                 count = pages.size,
                 state = pagerState,
+                verticalAlignment = Alignment.Top
             ) { page ->
                 when (page) {
-                    0 -> Text("Hello content")
+                    0 -> RecordsList(records = records)
                     1 -> ServiceList(services = services)
                 }
             }
@@ -104,6 +114,56 @@ fun ClientScreen(userState: UserState, services: Map<String, Service?>) {
 
     }
 
+}
+
+@Composable
+fun RecordsList(records: Map<String, Record?>) {
+    LazyColumn {
+        items(items = records.values.toList()) { record ->
+            UserRecord(record = record)
+        }
+    }
+}
+
+@Composable
+fun UserRecord(record: Record?) {
+    val formatter: DateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+    formatter.timeZone = TimeZone.getDefault()
+    val dateString = formatter.format(Date(record!!.time!!))
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .height(80.dp),
+        shape = RoundedCornerShape(30.dp),
+        backgroundColor = Pink100,
+        border = BorderStroke(
+            width = 2.dp,
+            color = DarkPink
+        )
+    ) {
+        Box(modifier = Modifier.padding(horizontal = 25.dp, vertical = 15.dp)) {
+            Text(
+                text = "${record.nameService!!} - $dateString",
+                modifier = Modifier.align(Alignment.TopStart),
+                style = MaterialTheme.typography.h6,
+                color = DarkPink,
+                fontSize = 18.sp
+            )
+            Text(
+                text = record.nameMaster!!,
+                modifier = Modifier.align(Alignment.BottomStart),
+                color = DarkPink,
+                fontSize = 16.sp,
+            )
+            Text(
+                text = record.priceService!!,
+                modifier = Modifier.align(Alignment.BottomEnd),
+                color = DarkPink,
+                fontSize = 16.sp,
+            )
+        }
+    }
 }
 
 @ExperimentalFoundationApi
@@ -259,7 +319,7 @@ fun MasterCard(master: ServiceMaster = ServiceMaster()) {
 fun ClientScreenPreview() {
     AngelsNailsTheme {
         ClientScreen(
-            userState = UserState(null, UserState.Role.CLIENT), mapOf(
+            userState = UserState(null, UserState.Role.CLIENT), services = mapOf(
                 Pair(
                     "a", Service(
                         "Massage",
@@ -325,6 +385,19 @@ fun ServiceItemPreview() {
             "Massage",
             "38.20€",
             "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+        )
+    )
+}
+
+@Preview("UserRecord")
+@Composable
+fun UserRecordPreview() {
+    UserRecord(
+        record = Record(
+            nameMaster = "Alla Zurabova",
+            nameService = "Manicure",
+            priceService = "35.00$",
+            time = 1500000000000
         )
     )
 }

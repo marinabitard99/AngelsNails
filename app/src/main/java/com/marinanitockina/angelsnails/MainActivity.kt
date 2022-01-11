@@ -47,7 +47,11 @@ fun AppScreen(viewModel: UserViewModel) {
         if (currentUser == null) {
             LoginScreen(viewModel = viewModel)
         } else {
-            SignedInScreen(userState = currentUser, services = viewModel.serviceState)
+            SignedInScreen(
+                userState = currentUser,
+                records = viewModel.userRecordsState,
+                services = viewModel.serviceState
+            )
         }
     }
 }
