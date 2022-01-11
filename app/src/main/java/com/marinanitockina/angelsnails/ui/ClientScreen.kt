@@ -223,7 +223,14 @@ fun MasterCard(master: ServiceMaster = ServiceMaster()) {
                         .align(Alignment.CenterVertically)
                         .aspectRatio(1f)
                         .clip(CircleShape)
-                        .border(1.dp, DarkPink, CircleShape)
+                        .border(1.dp, DarkPink, CircleShape),
+                    shimmerParams = ShimmerParams(
+                        baseColor = Pink50,
+                        highlightColor = Pink100,
+                        durationMillis = 500,
+                        dropOff = 0.65f,
+                        tilt = 20f
+                    ),
                 )
                 Text(
                     master.name!!,
