@@ -8,6 +8,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.marinanitockina.angelsnails.models.Service
+import com.marinanitockina.angelsnails.models.ServiceMaster
 import com.marinanitockina.angelsnails.models.User
 
 class UserRepository {
@@ -19,7 +20,7 @@ class UserRepository {
             .orderByChild("email")
             .equalTo(email)
 
-        query.addListenerForSingleValueEvent(object: ValueEventListener {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var user: User? = null
                 if (snapshot.exists()) {
@@ -38,10 +39,10 @@ class UserRepository {
     }
 
     fun getServices() {
-        val serviceList = mutableMapOf<String, Service>()
+        val serviceList = linkedMapOf<String, Service>()
         val query = database.child("services")
 
-        query.addListenerForSingleValueEvent(object: ValueEventListener {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { child ->
@@ -61,7 +62,33 @@ class UserRepository {
         })
     }
 
+    fun getServiceMasters() {
+        val mastersList = mutableMapOf<String, ServiceMaster?>()
+        val query = database.child("staff")
+            .orderByChild("role")
+            .equalTo("master")
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { child ->
+                        val master = child.getValue(ServiceMaster::class.java)
+                        master?.let {
+                            mastersList[child.key!!] = it
+                        }
+                    }
+                    serviceMastersCallback(mastersList)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("Ohsnap", "loadPost:onCancelled", error.toException())
+            }
+        })
+    }
+
     var userCallback: (User?) -> Unit = {}
     var servicesCallback: (Map<String, Service?>) -> Unit = {}
+    var serviceMastersCallback: (Map<String, ServiceMaster?>) -> Unit = {}
 
 }

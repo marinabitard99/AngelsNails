@@ -8,7 +8,7 @@ import com.marinanitockina.angelsnails.models.UserState.Role.*
 
 @ExperimentalFoundationApi
 @Composable
-fun SignedInScreen(userState: UserState, services: Map<String, Service>) {
+fun SignedInScreen(userState: UserState, services: Map<String, Service?>) {
     when (userState.role) {
         CLIENT -> ClientScreen(userState = userState, services = services)
         MASTER -> MasterScreen()

@@ -21,7 +21,7 @@ class UserViewModel : ViewModel() {
     val loadingState = MutableStateFlow(LoadingState.IDLE)
     var accountState: MutableState<UserState?> = mutableStateOf(null)
         private set
-    var serviceState = mutableStateMapOf<String, Service>()
+    var serviceState = mutableStateMapOf<String, Service?>()
 
     init {
         repository.userCallback = { user ->
@@ -36,10 +36,24 @@ class UserViewModel : ViewModel() {
 
             accountState.value = UserState(FirebaseAuth.getInstance().currentUser!!, role)
         }
+
         repository.servicesCallback = { serviceList ->
             serviceState.clear()
-            serviceList.forEach {
-                serviceState[it.key] = it.value!!
+            serviceState.putAll(serviceList)
+            repository.getServiceMasters()
+        }
+
+        repository.serviceMastersCallback = { masterList ->
+            serviceState.forEach { service ->
+                service.value?.masterIds?.forEach { masterFromList ->
+                    masterList.forEach { receivedMaster ->
+                        if (masterFromList.key == receivedMaster.key)
+                            service.value?.masters?.put(
+                                masterFromList.key,
+                                masterList.getValue(masterFromList.key)!!
+                            )
+                    }
+                }
             }
         }
     }

@@ -4,5 +4,6 @@ data class Service(
     val name: String? = null,
     val price: String? = null,
     val pictureUrl: String? = null,
-    val masters: Map<String, Boolean> = emptyMap()
+    val masterIds: MutableMap<String, Boolean> = mutableMapOf(),
+    val masters: MutableMap<String, ServiceMaster> = mutableMapOf()
 )

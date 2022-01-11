@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
 @Composable
-fun ClientScreen(userState: UserState, services: Map<String, Service>) {
+fun ClientScreen(userState: UserState, services: Map<String, Service?>) {
 
     Scaffold(
         topBar = {
@@ -99,7 +99,7 @@ fun ClientScreen(userState: UserState, services: Map<String, Service>) {
 
 @ExperimentalFoundationApi
 @Composable
-fun ServiceList(services: Map<String, Service> = emptyMap()) {
+fun ServiceList(services: Map<String, Service?> = emptyMap()) {
     CompositionLocalProvider(
         LocalOverScrollConfiguration provides null
     ) {
@@ -112,7 +112,7 @@ fun ServiceList(services: Map<String, Service> = emptyMap()) {
             ),
         ) {
             items(items = services.values.toList()) { service ->
-                ServiceItem(service = service)
+                ServiceItem(service = service!!)
             }
         }
     }
@@ -164,7 +164,7 @@ fun ServiceItem(service: Service) {
     AnimatedVisibility(visible = extended.value) {
         LazyColumn(modifier = Modifier.height((service.masters.size * 30).dp)) {
             items(items = service.masters.toList()) { master ->
-                Text(master.toString())
+                Text(master.second.name!!)
             }
         }
     }
