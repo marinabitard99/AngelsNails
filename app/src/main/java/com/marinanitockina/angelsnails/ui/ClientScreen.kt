@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,10 @@ import com.marinanitockina.angelsnails.ui.theme.Pink100
 import com.marinanitockina.angelsnails.ui.theme.Pink50
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -295,8 +300,31 @@ fun MasterCard(master: ServiceMaster = ServiceMaster()) {
                 )
             }
 
+            val dialogState = rememberMaterialDialogState()
+            MaterialDialog(
+                dialogState = dialogState,
+                buttons = {
+                    positiveButton(text = "Ok", textStyle = TextStyle(color = DarkPink))
+                    negativeButton(text ="Cancel", textStyle = TextStyle(color = DarkPink))
+                }
+            ) {
+                datepicker(
+                    yearRange = IntRange(2022, 2022),
+                    colors = DatePickerDefaults.colors(
+                        headerBackgroundColor = Pink100,
+                        headerTextColor = DarkPink,
+                        activeBackgroundColor = Pink100,
+                        inactiveBackgroundColor = Color.Transparent,
+                        activeTextColor = DarkPink,
+                        inactiveTextColor = MaterialTheme.colors.onBackground
+                    )
+                ) { date ->
+                    // Do stuff with java.time.LocalDate object which is passed in
+                }
+            }
+
             OutlinedButton(
-                onClick = { /*TODO*/ },
+                onClick = { dialogState.show() },
                 shape = RoundedCornerShape(25.dp),
                 modifier = Modifier.align(Alignment.CenterVertically),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Pink100),

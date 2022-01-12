@@ -93,6 +93,11 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:0.22.0-rc"
 
     /**
+     * Date and Time
+     */
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.6.2"
+
+    /**
      * Firebase
      */
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
