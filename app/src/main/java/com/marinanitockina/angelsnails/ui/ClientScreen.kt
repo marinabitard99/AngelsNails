@@ -316,6 +316,7 @@ fun MasterCard(
                             dropOff = 0.65f,
                             tilt = 20f
                         ),
+                        previewPlaceholder = R.drawable.cat
                     )
                     Text(
                         master.name!!,
