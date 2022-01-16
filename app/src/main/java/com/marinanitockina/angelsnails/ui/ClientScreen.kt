@@ -245,14 +245,17 @@ fun ServiceItem(service: Service) {
             )
 
             val expandedItem: MutableState<String?> = remember { mutableStateOf(null) }
+            val expandedListHeight = animateIntAsState(
+                if (expandedItem.value == null) {
+                    (service.masters.size * 70)
+                } else {
+                    (service.masters.size * 70 + 95)
+                }
+            )
 
             LazyColumn(
                 modifier = Modifier.height(
-                    if (expandedItem.value == null) {
-                        (service.masters.size * 70).dp
-                    } else {
-                        (service.masters.size * 70 + 95).dp
-                    }
+                    expandedListHeight.value.dp
                 )
             ) {
                 items(items = service.masters.toList()) { master ->
