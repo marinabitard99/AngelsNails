@@ -393,7 +393,7 @@ fun MasterCard(
                             .padding(top = 5.dp)
                     ) {
                         Text(
-                            text = "FINISH",
+                            text = "SIGN UP",
                             textAlign = TextAlign.Center,
                             modifier = Modifier.align(Alignment.CenterVertically),
                             color = DarkPink
