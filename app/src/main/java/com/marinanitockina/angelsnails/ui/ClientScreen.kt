@@ -7,6 +7,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -364,23 +366,39 @@ fun MasterCard(
                             .fillMaxWidth()
                             .padding(top = 10.dp)
                     ) {
-                        Text(
-                            text = "Date 15.01.2022",
-                            style = MaterialTheme.typography.body1,
-                            color = DarkPink,
-                            modifier = Modifier
-                                .align(Alignment.TopStart),
-                            fontSize = 18.sp
-                        )
+                        Row(modifier = Modifier.align(Alignment.TopStart)) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_baseline_event_24),
+                                contentDescription = "Date"
+                            )
 
-                        Text(
-                            text = "Time 15:00",
-                            style = MaterialTheme.typography.body1,
-                            color = DarkPink,
-                            modifier = Modifier
-                                .align(Alignment.TopEnd),
-                            fontSize = 18.sp
-                        )
+                            Text(
+                                text = "15.01.2022",
+                                modifier = Modifier
+                                    .padding(start = 10.dp)
+                                    .align(Alignment.CenterVertically),
+                                style = MaterialTheme.typography.body1,
+                                color = DarkPink,
+                                fontSize = 18.sp
+                            )
+                        }
+
+                        Row(modifier = Modifier.align(Alignment.TopEnd)) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_outline_access_time_24),
+                                contentDescription = "Date"
+                            )
+
+                            Text(
+                                text = "15:00",
+                                modifier = Modifier
+                                    .padding(start = 10.dp)
+                                    .align(Alignment.CenterVertically),
+                                style = MaterialTheme.typography.body1,
+                                color = DarkPink,
+                                fontSize = 18.sp
+                            )
+                        }
 
                     }
 
