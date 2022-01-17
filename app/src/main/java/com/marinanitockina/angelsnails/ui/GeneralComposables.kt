@@ -1,13 +1,18 @@
 package com.marinanitockina.angelsnails.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,6 +63,46 @@ fun ChipButton(text: String, modifier: Modifier = Modifier, onClickAction: () ->
     }
 }
 
+// https://stackoverflow.com/questions/68600128/remove-default-padding-on-jetpack-compose-textfield
+@Composable
+fun BottomOutlineTextField(
+    placeholder: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    Column {
+
+        BasicTextField(
+            modifier = modifier,
+            value = value,
+            onValueChange = onValueChange,
+            textStyle = TextStyle(
+                color = DarkPink
+            ),
+            readOnly = true,
+            decorationBox = { innerTextField ->
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    if (value.isEmpty()) {
+                        Text(
+                            text = placeholder,
+                            color = Color.LightGray,
+                            fontSize = 16.sp,
+                            modifier = Modifier.align(Alignment.CenterVertically)
+                        )
+                    }
+                }
+                innerTextField()
+            }
+        )
+
+        Divider(color = DarkPink, thickness = 1.dp, modifier = modifier)
+    }
+
+
+}
+
 @Preview("Chip")
 @Composable
 fun ChipPreview() {
@@ -70,6 +115,15 @@ fun ChipButtonPreview() {
     Row {
         ChipButton(text = "SELECT", modifier = Modifier.align(Alignment.CenterVertically))
     }
+}
 
+@Preview("BottomOutlineText")
+@Composable
+fun BottomOutlineTextPreview() {
+    BottomOutlineTextField(
+        placeholder = "Hello",
+        value = "",
+        onValueChange = {}
+    )
 }
 

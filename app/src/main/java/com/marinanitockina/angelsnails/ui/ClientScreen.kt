@@ -5,10 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -354,17 +351,14 @@ fun MasterCard(
                     .padding(top = 10.dp)
             ) {
 
-                Divider(
-                    Modifier.height(1.dp),
-                    color = Color.LightGray
-                )
-
                 Column {
+
+                    var date: String? by remember { mutableStateOf(null) }
+                    var time: String? by remember { mutableStateOf(null) }
 
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 10.dp)
                     ) {
                         Row(modifier = Modifier.align(Alignment.TopStart)) {
                             Image(
@@ -372,14 +366,20 @@ fun MasterCard(
                                 contentDescription = "Date"
                             )
 
-                            Text(
-                                text = "15.01.2022",
+                            val calendar = Calendar.getInstance()
+                            calendar.add(Calendar.DATE, 1)
+                            val df = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                            val formattedDate = df.format(calendar.time)
+
+                            BottomOutlineTextField(
+                                placeholder = formattedDate,
+                                value = date ?: "",
+                                onValueChange = { date = it },
                                 modifier = Modifier
-                                    .padding(start = 10.dp)
-                                    .align(Alignment.CenterVertically),
-                                style = MaterialTheme.typography.body1,
-                                color = DarkPink,
-                                fontSize = 18.sp
+                                    .width(90.dp)
+                                    .padding(start = 5.dp)
+                                    .align(Alignment.CenterVertically)
+                                    .clickable { }
                             )
                         }
 
@@ -389,15 +389,23 @@ fun MasterCard(
                                 contentDescription = "Date"
                             )
 
-                            Text(
-                                text = "15:00",
-                                modifier = Modifier
-                                    .padding(start = 10.dp)
-                                    .align(Alignment.CenterVertically),
-                                style = MaterialTheme.typography.body1,
-                                color = DarkPink,
-                                fontSize = 18.sp
+                            val availableTimes = listOf(
+                                "9:00", "10:00", "11:00", "12:00", "13:00",
+                                "14:00", "15:00", "16:00", "17:00", "18:00"
                             )
+                            val shownTime = remember { availableTimes.random() }
+
+                            BottomOutlineTextField(
+                                placeholder = shownTime,
+                                value = time ?: "",
+                                onValueChange = { time = it },
+                                modifier = Modifier
+                                    .width(50.dp)
+                                    .padding(start = 5.dp)
+                                    .align(Alignment.CenterVertically)
+                                    .clickable { }
+                            )
+
                         }
 
                     }
@@ -409,7 +417,7 @@ fun MasterCard(
                         border = BorderStroke(1.dp, DarkPink),
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
-                            .padding(top = 5.dp)
+                            .padding(top = 12.dp)
                     ) {
                         Text(
                             text = "SIGN UP",
