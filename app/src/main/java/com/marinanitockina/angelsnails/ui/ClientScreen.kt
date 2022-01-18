@@ -148,7 +148,7 @@ fun UserRecord(record: Record?) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 10.dp)
-            .height(80.dp),
+            .height(100.dp),
         shape = RoundedCornerShape(30.dp),
         backgroundColor = Pink100,
         border = BorderStroke(
@@ -156,7 +156,7 @@ fun UserRecord(record: Record?) {
             color = DarkPink
         )
     ) {
-        Box(modifier = Modifier.padding(horizontal = 25.dp, vertical = 15.dp)) {
+        Box(modifier = Modifier.padding(horizontal = 20.dp, vertical = 15.dp)) {
             Text(
                 text = "${record.nameService!!} - $dateString",
                 modifier = Modifier.align(Alignment.TopStart),
@@ -167,6 +167,12 @@ fun UserRecord(record: Record?) {
             Text(
                 text = record.nameMaster!!,
                 modifier = Modifier.align(Alignment.BottomStart),
+                color = DarkPink,
+                fontSize = 16.sp,
+            )
+            Text(
+                text = "Rīga, Mangaļu iela 1",
+                modifier = Modifier.align(Alignment.CenterStart).padding(top = 5.dp),
                 color = DarkPink,
                 fontSize = 16.sp,
             )
