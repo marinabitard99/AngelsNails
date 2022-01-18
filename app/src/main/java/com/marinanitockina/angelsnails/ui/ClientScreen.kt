@@ -172,7 +172,9 @@ fun UserRecord(record: Record?) {
             )
             Text(
                 text = "Rīga, Mangaļu iela 1",
-                modifier = Modifier.align(Alignment.CenterStart).padding(top = 5.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(top = 5.dp),
                 color = DarkPink,
                 fontSize = 16.sp,
             )
@@ -398,11 +400,19 @@ fun MasterCard(
                                 buttons = {
                                     positiveButton(
                                         text = "Ok",
-                                        textStyle = TextStyle(color = DarkPink)
+                                        textStyle = TextStyle(
+                                            color = DarkPink,
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
                                     )
                                     negativeButton(
                                         text = "Cancel",
-                                        textStyle = TextStyle(color = DarkPink)
+                                        textStyle = TextStyle(
+                                            color = DarkPink,
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
                                     )
                                 }
                             ) {
@@ -463,11 +473,19 @@ fun MasterCard(
                                 buttons = {
                                     positiveButton(
                                         text = "Ok",
-                                        textStyle = TextStyle(color = DarkPink)
+                                        textStyle = TextStyle(
+                                            color = DarkPink,
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
                                     )
                                     negativeButton(
                                         text = "Cancel",
-                                        textStyle = TextStyle(color = DarkPink)
+                                        textStyle = TextStyle(
+                                            color = DarkPink,
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
                                     )
                                 }
                             ) {
