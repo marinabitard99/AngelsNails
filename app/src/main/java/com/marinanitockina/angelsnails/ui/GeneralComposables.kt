@@ -79,9 +79,10 @@ fun BottomOutlineTextField(
             value = value,
             onValueChange = onValueChange,
             textStyle = TextStyle(
-                color = DarkPink
+                color = DarkPink,
+                fontSize = 16.sp
             ),
-            readOnly = true,
+            enabled = false,
             decorationBox = { innerTextField ->
                 Row(modifier = Modifier.fillMaxWidth()) {
                     if (value.isEmpty()) {

@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,9 +39,18 @@ import com.marinanitockina.angelsnails.ui.theme.Pink100
 import com.marinanitockina.angelsnails.ui.theme.Pink50
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.datetime.time.TimePickerDefaults
+import com.vanpra.composematerialdialogs.datetime.time.timepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -371,6 +381,47 @@ fun MasterCard(
                             val df = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
                             val formattedDate = df.format(calendar.time)
 
+                            val dateDialogState = rememberMaterialDialogState()
+
+                            MaterialDialog(
+                                dialogState = dateDialogState,
+                                buttons = {
+                                    positiveButton(
+                                        text = "Ok",
+                                        textStyle = TextStyle(color = DarkPink)
+                                    )
+                                    negativeButton(
+                                        text = "Cancel",
+                                        textStyle = TextStyle(color = DarkPink)
+                                    )
+                                }
+                            ) {
+                                datepicker(
+                                    initialDate = LocalDateTime.ofInstant(
+                                        calendar.toInstant(),
+                                        calendar.timeZone.toZoneId()
+                                    ).toLocalDate(),
+                                    title = "SELECT DATE OF APPOINTMENT",
+                                    yearRange = IntRange(
+                                        calendar.get(Calendar.YEAR),
+                                        calendar.get(Calendar.YEAR)
+                                    ),
+                                    colors = DatePickerDefaults.colors(
+                                        headerBackgroundColor = Pink100,
+                                        headerTextColor = DarkPink,
+                                        activeBackgroundColor = Pink100,
+                                        inactiveBackgroundColor = Color.Transparent,
+                                        activeTextColor = DarkPink,
+                                        inactiveTextColor = MaterialTheme.colors.onBackground
+                                    )
+                                ) { selectedDate ->
+                                    val formatter: DateTimeFormatter =
+                                        DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                                    val formattedString: String = selectedDate.format(formatter)
+                                    date = formattedString
+                                }
+                            }
+
                             BottomOutlineTextField(
                                 placeholder = formattedDate,
                                 value = date ?: "",
@@ -379,7 +430,7 @@ fun MasterCard(
                                     .width(90.dp)
                                     .padding(start = 5.dp)
                                     .align(Alignment.CenterVertically)
-                                    .clickable { }
+                                    .clickable { dateDialogState.show() }
                             )
                         }
 
@@ -390,10 +441,43 @@ fun MasterCard(
                             )
 
                             val availableTimes = listOf(
-                                "9:00", "10:00", "11:00", "12:00", "13:00",
-                                "14:00", "15:00", "16:00", "17:00", "18:00"
+                                "10:00", "11:00", "12:00", "13:00",
+                                "14:00", "15:00", "16:00", "17:00"
                             )
                             val shownTime = remember { availableTimes.random() }
+
+                            val timeDialogState = rememberMaterialDialogState()
+
+                            MaterialDialog(
+                                dialogState = timeDialogState,
+                                buttons = {
+                                    positiveButton(
+                                        text = "Ok",
+                                        textStyle = TextStyle(color = DarkPink)
+                                    )
+                                    negativeButton(
+                                        text = "Cancel",
+                                        textStyle = TextStyle(color = DarkPink)
+                                    )
+                                }
+                            ) {
+                                val formatter = DateTimeFormatter.ofPattern("HH:mm")
+                                timepicker(
+                                    initialTime = LocalTime.parse(shownTime, formatter),
+                                    title = "SELECT TIME OF APPOINTMENT",
+                                    timeRange = LocalTime.of(10, 0)..LocalTime.of(17, 0),
+                                    is24HourClock = true,
+                                    colors = TimePickerDefaults.colors(
+                                        activeBackgroundColor = Pink100,
+                                        inactiveBackgroundColor = Color.Transparent,
+                                        activeTextColor = DarkPink,
+                                        inactiveTextColor = MaterialTheme.colors.onBackground
+                                    )
+                                ) { selectedTime ->
+                                    val formattedString: String = selectedTime.format(formatter)
+                                    time = formattedString
+                                }
+                            }
 
                             BottomOutlineTextField(
                                 placeholder = shownTime,
@@ -403,12 +487,14 @@ fun MasterCard(
                                     .width(50.dp)
                                     .padding(start = 5.dp)
                                     .align(Alignment.CenterVertically)
-                                    .clickable { }
+                                    .clickable { timeDialogState.show() }
                             )
 
                         }
 
                     }
+
+                    val confirmDialogState = rememberMaterialDialogState()
 
                     OutlinedButton(
                         onClick = { },
@@ -417,7 +503,8 @@ fun MasterCard(
                         border = BorderStroke(1.dp, DarkPink),
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
-                            .padding(top = 12.dp)
+                            .padding(top = 12.dp),
+                        enabled = !date.isNullOrEmpty() && !time.isNullOrEmpty()
                     ) {
                         Text(
                             text = "SIGN UP",
@@ -429,99 +516,6 @@ fun MasterCard(
                 }
 
             }
-
-
-//
-//            val dateDialogState = rememberMaterialDialogState()
-//            val timeDialogState = rememberMaterialDialogState()
-//            val confirmDialogState = rememberMaterialDialogState()
-//
-//            Row(
-//                modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
-//                horizontalArrangement = Arrangement.SpaceBetween
-//            ) {
-//                val calendar = Calendar.getInstance()
-//                calendar.add(Calendar.DATE, 1)
-//                val df = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-//                val formattedDate = df.format(calendar.time)
-//                Text("Date: ")
-//                TextButton(onClick = { /*TODO*/ }) {
-//                    Text(formattedDate)
-//                }
-//                val availableTimes = listOf(
-//                    "9:00", "10:00", "11:00", "12:00", "13:00",
-//                    "14:00", "15:00", "16:00", "17:00", "18:00"
-//                )
-//                val shownTime = remember { availableTimes.random() }
-//                Text("Time: ")
-//                TextButton(onClick = {/*TODO*/ }) {
-//                    Text(shownTime)
-//                }
-//            }
-
-//            val dateDialogState = rememberMaterialDialogState()
-//            MaterialDialog(
-//                dialogState = dialogState,
-//                buttons = {
-//                    positiveButton(text = "Ok", textStyle = TextStyle(color = DarkPink)) {
-//                        val t
-//                    }
-//                    negativeButton(text ="Cancel", textStyle = TextStyle(color = DarkPink))
-//                }
-//            ) {
-//                datepicker(
-//                    yearRange = IntRange(2022, 2022),
-//                    colors = DatePickerDefaults.colors(
-//                        headerBackgroundColor = Pink100,
-//                        headerTextColor = DarkPink,
-//                        activeBackgroundColor = Pink100,
-//                        inactiveBackgroundColor = Color.Transparent,
-//                        activeTextColor = DarkPink,
-//                        inactiveTextColor = MaterialTheme.colors.onBackground
-//                    )
-//                ) { date ->
-//                    // Do stuff with java.time.LocalDate object which is passed in
-//                }
-//            }
-
-//            val dateAndTimeDialogState = rememberMaterialDialogState()
-//            MaterialDialog(
-//                dialogState = dateAndTimeDialogState,
-//                buttons = {
-//                    positiveButton("Finish", textStyle = TextStyle(color = DarkPink))
-//                    negativeButton("Cancel", textStyle = TextStyle(color = DarkPink))
-//                }
-//            ) {
-//                title(text = "Select date and time")
-//
-//                customView {
-//                    val dateDialogState = rememberMaterialDialogState()
-//                    MaterialDialog(
-//                        dialogState = dialogState,
-//                        buttons = {
-//                            positiveButton(text = "Ok", textStyle = TextStyle(color = DarkPink))
-//                            negativeButton(text = "Cancel", textStyle = TextStyle(color = DarkPink))
-//                        }
-//                    ) {
-//                        datepicker(
-//                            yearRange = IntRange(2022, 2022),
-//                            colors = DatePickerDefaults.colors(
-//                                headerBackgroundColor = Pink100,
-//                                headerTextColor = DarkPink,
-//                                activeBackgroundColor = Pink100,
-//                                inactiveBackgroundColor = Color.Transparent,
-//                                activeTextColor = DarkPink,
-//                                inactiveTextColor = MaterialTheme.colors.onBackground
-//                            )
-//                        ) { date ->
-//                            // Do stuff with java.time.LocalDate object which is passed in
-//                        }
-//                    }
-//
-
-//
-//                }
-//            }
 
         }
     }
