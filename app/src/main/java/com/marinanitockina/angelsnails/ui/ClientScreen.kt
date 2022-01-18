@@ -1,5 +1,6 @@
 package com.marinanitockina.angelsnails.ui
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
@@ -19,8 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +48,7 @@ import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.TimePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import com.vanpra.composematerialdialogs.title
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -494,10 +498,37 @@ fun MasterCard(
 
                     }
 
+                    val context = LocalContext.current
                     val confirmDialogState = rememberMaterialDialogState()
 
+                    MaterialDialog(
+                        dialogState = confirmDialogState,
+                        buttons = {
+                            positiveButton(
+                                text = "Yes",
+                                textStyle = TextStyle(
+                                    color = DarkPink,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                            }
+                            negativeButton(
+                                text = "Cancel",
+                                textStyle = TextStyle(
+                                    color = DarkPink,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                        }
+                    ) {
+                        title("Do you want to finish the reservation?")
+                    }
+
                     OutlinedButton(
-                        onClick = { },
+                        onClick = { confirmDialogState.show() },
                         shape = RoundedCornerShape(25.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = Pink100),
                         border = BorderStroke(1.dp, DarkPink),
