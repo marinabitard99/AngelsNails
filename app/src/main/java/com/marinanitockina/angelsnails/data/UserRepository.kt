@@ -113,6 +113,22 @@ class UserRepository {
 
     }
 
+    fun saveRecord(record: Record) {
+        val key = database.child("records").push().key
+        if (key == null) {
+            Log.w("Ohsnap", "Couldn't get push key for posts")
+            return
+        }
+
+        val recordValues = record.toMap()
+
+        val childUpdates = hashMapOf<String, Any>(
+            "/records/$key" to recordValues,
+        )
+
+        database.updateChildren(childUpdates)
+    }
+
     var userCallback: (User?) -> Unit = {}
     var servicesCallback: (Map<String, Service?>) -> Unit = {}
     var serviceMastersCallback: (Map<String, ServiceMaster?>) -> Unit = {}

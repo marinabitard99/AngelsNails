@@ -48,9 +48,11 @@ fun AppScreen(viewModel: UserViewModel) {
             LoginScreen(viewModel = viewModel)
         } else {
             SignedInScreen(
+                isLoading = viewModel.loadingState.value,
                 userState = currentUser,
                 records = viewModel.userRecordsState,
-                services = viewModel.serviceState
+                services = viewModel.serviceState,
+                onSaveRecord = viewModel::saveRecord
             )
         }
     }

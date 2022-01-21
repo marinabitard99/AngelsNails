@@ -10,17 +10,16 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.marinanitockina.angelsnails.models.LoadingState
 import com.marinanitockina.angelsnails.models.Record
 import com.marinanitockina.angelsnails.models.Service
 import com.marinanitockina.angelsnails.models.UserState
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
 
     private val repository = UserRepository()
-    val loadingState = MutableStateFlow(LoadingState.IDLE)
+//    val loadingState = MutableStateFlow(LoadingState.IDLE)
+    val loadingState = mutableStateOf(false)
     var accountState: MutableState<UserState?> = mutableStateOf(null)
         private set
     var serviceState = mutableStateMapOf<String, Service?>()
@@ -28,6 +27,7 @@ class UserViewModel : ViewModel() {
     var userRecordsState = mutableStateMapOf<String, Record?>()
     var unavailableServiceTimes = mutableStateListOf<Long>()
         private set
+
 
     init {
         repository.userCallback = { user ->
@@ -62,6 +62,7 @@ class UserViewModel : ViewModel() {
                     }
                 }
             }
+            loadingState.value = false
         }
 
         repository.userRecordsCallback = { userRecordsList ->
@@ -69,33 +70,40 @@ class UserViewModel : ViewModel() {
             userRecordsList.forEach {
                 userRecordsState[it.key] = it.value
             }
+            loadingState.value = false
         }
     }
 
     fun signInWithEmailAndPassword(email: String, password: String) = viewModelScope.launch {
         try {
-            loadingState.emit(LoadingState.LOADING)
+            loadingState.value = true
             Firebase.auth.signInWithEmailAndPassword(email, password)
-            loadingState.emit(LoadingState.LOADED)
+            loadingState.value = false
         } catch (e: Exception) {
-            loadingState.emit(LoadingState.error(e.localizedMessage))
+            loadingState.value = true
         }
     }
 
     fun signWithCredential(credential: AuthCredential) {
         viewModelScope.launch {
             try {
-                loadingState.emit(LoadingState.LOADING)
+                loadingState.value = true
                 Firebase.auth.signInWithCredential(credential)
-                loadingState.emit(LoadingState.LOADED)
+                loadingState.value = false
             } catch (e: Exception) {
-                loadingState.emit(LoadingState.error(e.localizedMessage))
+                loadingState.value = true
             }
         }
     }
 
     fun fetchUserRole(email: String) {
         repository.getUserInfo(email)
+    }
+
+    fun saveRecord(record: Record) {
+        loadingState.value = true
+        repository.saveRecord(record)
+        repository.getUserRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
     }
 
 }

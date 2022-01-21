@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
+import com.google.firebase.auth.FirebaseAuth
 import com.marinanitockina.angelsnails.R
 import com.marinanitockina.angelsnails.models.Record
 import com.marinanitockina.angelsnails.models.Service
 import com.marinanitockina.angelsnails.models.ServiceMaster
-import com.marinanitockina.angelsnails.models.UserState
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.marinanitockina.angelsnails.ui.theme.Pink100
@@ -50,7 +50,6 @@ import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import com.vanpra.composematerialdialogs.title
 import kotlinx.coroutines.launch
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -61,136 +60,64 @@ import java.util.*
 @ExperimentalFoundationApi
 @Composable
 fun ClientScreen(
-    userState: UserState,
     records: Map<String, Record?> = emptyMap(),
-    services: Map<String, Service?> = emptyMap()
+    services: Map<String, Service?> = emptyMap(),
+    onSaveRecord: (Record) -> Unit = {}
 ) {
 
-    Scaffold(
-        topBar = {
-            CenterTopAppBar(
-                title = {
-                    Text(text = "Welcome, ${userState.account?.displayName ?: "Welcome back"}!")
-                },
-                contentColor = DarkPink,
-                elevation = 0.dp,
-            )
-        }
-    ) {
-        val pagerState = rememberPagerState()
-        val pages = listOf("My Records", "Book a Service")
-        val scope = rememberCoroutineScope()
+    val pagerState = rememberPagerState()
+    val pages = listOf("My Records", "Book a Service")
+    val scope = rememberCoroutineScope()
 
-        Column {
-            TabRow(
-                selectedTabIndex = pagerState.currentPage,
-                indicator = { tabPositions ->
-                    TabRowDefaults.Indicator(
-                        modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                        color = DarkPink
-                    )
-                }
-            ) {
-                // Add tabs for all of our pages
-                pages.forEachIndexed { index, title ->
-                    Tab(
-                        text = {
-                            Text(
-                                text = title,
-                                color = DarkPink,
-                                fontSize = 18.sp,
-                                style = MaterialTheme.typography.h6
-                            )
-                        },
-                        selected = pagerState.currentPage == index,
-                        onClick = {
-                            scope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                    )
-                }
+    Column {
+        TabRow(
+            selectedTabIndex = pagerState.currentPage,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                    color = DarkPink
+                )
             }
-
-            HorizontalPager(
-                count = pages.size,
-                state = pagerState,
-                verticalAlignment = Alignment.Top
-            ) { page ->
-                when (page) {
-                    0 -> RecordsList(records = records)
-                    1 -> ServiceList(services = services)
-                }
+        ) {
+            // Add tabs for all of our pages
+            pages.forEachIndexed { index, title ->
+                Tab(
+                    text = {
+                        Text(
+                            text = title,
+                            color = DarkPink,
+                            fontSize = 18.sp,
+                            style = MaterialTheme.typography.h6
+                        )
+                    },
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                )
             }
+        }
 
-
+        HorizontalPager(
+            count = pages.size,
+            state = pagerState,
+            verticalAlignment = Alignment.Top
+        ) { page ->
+            when (page) {
+                0 -> UserRecordsList(records = records)
+                1 -> ServiceList(services = services, onFinishClicked = onSaveRecord)
+            }
         }
 
     }
 
-}
-
-@Composable
-fun RecordsList(records: Map<String, Record?>) {
-    LazyColumn {
-        items(items = records.values.toList()) { record ->
-            UserRecord(record = record)
-        }
-    }
-}
-
-@Composable
-fun UserRecord(record: Record?) {
-    val formatter: DateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-    formatter.timeZone = TimeZone.getDefault()
-    val dateString = formatter.format(Date(record!!.time!!))
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 10.dp)
-            .height(100.dp),
-        shape = RoundedCornerShape(30.dp),
-        backgroundColor = Pink100,
-        border = BorderStroke(
-            width = 2.dp,
-            color = DarkPink
-        )
-    ) {
-        Box(modifier = Modifier.padding(horizontal = 20.dp, vertical = 15.dp)) {
-            Text(
-                text = "${record.nameService!!} - $dateString",
-                modifier = Modifier.align(Alignment.TopStart),
-                style = MaterialTheme.typography.h6,
-                color = DarkPink,
-                fontSize = 18.sp
-            )
-            Text(
-                text = record.nameMaster!!,
-                modifier = Modifier.align(Alignment.BottomStart),
-                color = DarkPink,
-                fontSize = 16.sp,
-            )
-            Text(
-                text = "Rīga, Mangaļu iela 1",
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(top = 5.dp),
-                color = DarkPink,
-                fontSize = 16.sp,
-            )
-            Text(
-                text = record.priceService!!,
-                modifier = Modifier.align(Alignment.BottomEnd),
-                color = DarkPink,
-                fontSize = 16.sp,
-            )
-        }
-    }
 }
 
 @ExperimentalFoundationApi
 @Composable
-fun ServiceList(services: Map<String, Service?> = emptyMap()) {
+fun ServiceList(services: Map<String, Service?> = emptyMap(), onFinishClicked: (Record) -> Unit = {}) {
     CompositionLocalProvider(
         LocalOverScrollConfiguration provides null
     ) {
@@ -202,15 +129,18 @@ fun ServiceList(services: Map<String, Service?> = emptyMap()) {
                 bottom = 2.dp
             ),
         ) {
-            items(items = services.values.toList()) { service ->
-                ServiceItem(service = service!!)
+            items(items = services.toList()) { service ->
+                ServiceItem(service = service, onFinishClicked = onFinishClicked)
             }
         }
     }
 }
 
 @Composable
-fun ServiceItem(service: Service) {
+fun ServiceItem(
+    service: Pair<String, Service?> = Pair("", Service()),
+    onFinishClicked: (Record) -> Unit = {}
+) {
 
     val extended = remember { mutableStateOf(false) }
     val scale = animateFloatAsState(if (extended.value) 0.95f else 1f)
@@ -224,7 +154,7 @@ fun ServiceItem(service: Service) {
     ) {
         Box {
             GlideImage(
-                imageModel = service.pictureUrl,
+                imageModel = service.second?.pictureUrl,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp),
@@ -238,13 +168,13 @@ fun ServiceItem(service: Service) {
                 previewPlaceholder = R.drawable.cat
             )
             Chip(
-                text = service.name ?: "",
+                text = service.second?.name ?: "",
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(10.dp)
             )
             Chip(
-                text = service.price!!,
+                text = service.second?.price ?: "",
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(10.dp)
@@ -259,7 +189,7 @@ fun ServiceItem(service: Service) {
     ) {
         Column {
             Text(
-                text = "Choose a master for ${service.name?.lowercase()}",
+                text = "Choose a master for ${service.second?.name?.lowercase() ?: ""}",
                 style = MaterialTheme.typography.h6,
                 color = DarkPink,
                 modifier = Modifier.padding(start = 9.dp)
@@ -268,9 +198,9 @@ fun ServiceItem(service: Service) {
             val expandedItem: MutableState<String?> = remember { mutableStateOf(null) }
             val expandedListHeight = animateIntAsState(
                 if (expandedItem.value == null) {
-                    (service.masters.size * 70)
+                    ((service.second?.masters?.size ?: 0) * 70)
                 } else {
-                    (service.masters.size * 70 + 95)
+                    ((service.second?.masters?.size ?: 0) * 70 + 95)
                 }
             )
 
@@ -279,13 +209,18 @@ fun ServiceItem(service: Service) {
                     expandedListHeight.value.dp
                 )
             ) {
-                items(items = service.masters.toList()) { master ->
+                items(items = service.second?.masters?.toList() ?: emptyList()) { master ->
                     MasterCard(
-                        master = master.second,
+                        serviceId = service.first,
+                        serviceName = service.second?.name ?: "",
+                        servicePrice = service.second?.price ?: "",
+                        master = master,
                         expanded = master.second.name == expandedItem.value,
                         onSelectClicked = {
                             expandedItem.value = it
-                        })
+                        },
+                        onFinishClicked = onFinishClicked
+                    )
                 }
             }
         }
@@ -297,9 +232,13 @@ fun ServiceItem(service: Service) {
 
 @Composable
 fun MasterCard(
-    master: ServiceMaster = ServiceMaster(),
+    serviceId: String = "",
+    serviceName: String = "",
+    servicePrice: String = "",
+    master: Pair<String, ServiceMaster> = Pair("", ServiceMaster()),
     expanded: Boolean = false,
-    onSelectClicked: (String?) -> Unit = {}
+    onSelectClicked: (String?) -> Unit = {},
+    onFinishClicked: (Record) -> Unit = {}
 ) {
 
     val height = animateIntAsState(if (expanded) 165 else 70)
@@ -323,7 +262,7 @@ fun MasterCard(
                         .fillMaxWidth()
                 ) {
                     GlideImage(
-                        imageModel = master.pictureUrl,
+                        imageModel = master.second.pictureUrl,
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .clip(CircleShape)
@@ -340,7 +279,7 @@ fun MasterCard(
                         previewPlaceholder = R.drawable.cat
                     )
                     Text(
-                        master.name!!,
+                        master.second.name!!,
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .padding(start = 10.dp),
@@ -349,7 +288,7 @@ fun MasterCard(
                 }
 
                 OutlinedButton(
-                    onClick = { if (expanded) onSelectClicked(null) else onSelectClicked(master.name) },
+                    onClick = { if (expanded) onSelectClicked(null) else onSelectClicked(master.second.name) },
                     shape = RoundedCornerShape(25.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Pink100),
                     border = BorderStroke(1.dp, DarkPink),
@@ -536,7 +475,22 @@ fun MasterCard(
                                     fontWeight = FontWeight.Bold
                                 )
                             ) {
-                                Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                                val timeStamp = System.currentTimeMillis()
+                                val record = Record(
+                                    email = FirebaseAuth.getInstance().currentUser!!.email!!,
+                                    idMaster = master.first,
+                                    nameMaster = master.second.name,
+                                    idService = serviceId,
+                                    nameService = serviceName,
+                                    priceService = servicePrice,
+                                    time = timeStamp
+                                )
+                                onFinishClicked(record)
+                                Toast.makeText(
+                                    context,
+                                    "Record saved successfully!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                             negativeButton(
                                 text = "Cancel",
@@ -582,7 +536,7 @@ fun MasterCard(
 fun ClientScreenPreview() {
     AngelsNailsTheme {
         ClientScreen(
-            userState = UserState(null, UserState.Role.CLIENT), services = mapOf(
+            services = mapOf(
                 Pair(
                     "a", Service(
                         "Massage",
@@ -644,10 +598,12 @@ fun ServiceListPreview() {
 @Composable
 fun ServiceItemPreview() {
     ServiceItem(
-        service = Service(
-            "Massage",
-            "38.20€",
-            "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+        service = Pair(
+            "service", Service(
+                "Massage",
+                "38.20€",
+                "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
+            )
         )
     )
 }

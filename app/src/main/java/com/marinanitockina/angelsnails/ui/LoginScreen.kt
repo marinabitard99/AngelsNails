@@ -28,28 +28,26 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.marinanitockina.angelsnails.R
 import com.marinanitockina.angelsnails.data.UserViewModel
-import com.marinanitockina.angelsnails.models.LoadingState
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 
 @Composable
 fun LoginScreen(viewModel: UserViewModel) {
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val state by viewModel.loadingState.collectAsState()
 
     Scaffold(
         scaffoldState = rememberScaffoldState(snackbarHostState = snackbarHostState),
         topBar = {
-            LoginToolbar(state = state)
+            LoginToolbar()
         },
         content = {
-            EmailPasswordSignIn(viewModel = viewModel, state)
+            EmailPasswordSignIn(viewModel = viewModel)
         }
     )
 }
 
 @Composable
-fun LoginToolbar(state: LoadingState) {
+fun LoginToolbar() {
     Column(modifier = Modifier.fillMaxWidth()) {
         TopAppBar(
             backgroundColor = Color.White,
@@ -74,14 +72,14 @@ fun LoginToolbar(state: LoadingState) {
                 }
             }
         )
-        if (state.status == LoadingState.Status.RUNNING) {
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-        }
+//        if (state.status == LoadingState.Status.RUNNING) {
+//            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+//        }
     }
 }
 
 @Composable
-fun EmailPasswordSignIn(viewModel: UserViewModel, state: LoadingState) {
+fun EmailPasswordSignIn(viewModel: UserViewModel) {
 
     var userEmail by remember { mutableStateOf("") }
     var userPassword by remember { mutableStateOf("") }
@@ -137,14 +135,14 @@ fun EmailPasswordSignIn(viewModel: UserViewModel, state: LoadingState) {
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            GoogleSignInButton(viewModel = viewModel, state = state)
+            GoogleSignInButton(viewModel = viewModel)
 
         }
     )
 }
 
 @Composable
-fun GoogleSignInButton(viewModel: UserViewModel, state: LoadingState) {
+fun GoogleSignInButton(viewModel: UserViewModel) {
     val context = LocalContext.current
     val token = stringResource(R.string.default_web_client_id)
 
@@ -201,15 +199,15 @@ fun GoogleSignInButton(viewModel: UserViewModel, state: LoadingState) {
         }
     )
 
-    when (state.status) {
-        LoadingState.Status.SUCCESS -> {
-            Text(text = "Success")
-        }
-        LoadingState.Status.FAILED -> {
-            Text(text = state.msg ?: "Error")
-        }
-        else -> {}
-    }
+//    when (state.status) {
+//        LoadingState.Status.SUCCESS -> {
+//            Text(text = "Success")
+//        }
+//        LoadingState.Status.FAILED -> {
+//            Text(text = state.msg ?: "Error")
+//        }
+//        else -> {}
+//    }
 
 }
 
@@ -218,7 +216,7 @@ fun GoogleSignInButton(viewModel: UserViewModel, state: LoadingState) {
 @Composable
 fun RegularSignInPreview() {
     AngelsNailsTheme {
-        EmailPasswordSignIn(viewModel = UserViewModel(), LoadingState.IDLE)
+        EmailPasswordSignIn(viewModel = UserViewModel())
     }
 }
 
@@ -226,6 +224,6 @@ fun RegularSignInPreview() {
 @Composable
 fun GoogleButtonPreview() {
     AngelsNailsTheme {
-        GoogleSignInButton(viewModel = UserViewModel(),  LoadingState.IDLE)
+        GoogleSignInButton(viewModel = UserViewModel())
     }
 }
