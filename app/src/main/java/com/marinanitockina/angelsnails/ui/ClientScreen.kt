@@ -117,7 +117,10 @@ fun ClientScreen(
 
 @ExperimentalFoundationApi
 @Composable
-fun ServiceList(services: Map<String, Service?> = emptyMap(), onFinishClicked: (Record) -> Unit = {}) {
+fun ServiceList(
+    services: Map<String, Service?> = emptyMap(),
+    onFinishClicked: (Record) -> Unit = {}
+) {
     CompositionLocalProvider(
         LocalOverScrollConfiguration provides null
     ) {
@@ -475,7 +478,11 @@ fun MasterCard(
                                     fontWeight = FontWeight.Bold
                                 )
                             ) {
-                                val timeStamp = System.currentTimeMillis()
+
+                                val recordTime = "$date $time"
+                                val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                                val parsedDate = dateFormat.parse(recordTime)
+
                                 val record = Record(
                                     email = FirebaseAuth.getInstance().currentUser!!.email!!,
                                     idMaster = master.first,
@@ -483,7 +490,7 @@ fun MasterCard(
                                     idService = serviceId,
                                     nameService = serviceName,
                                     priceService = servicePrice,
-                                    time = timeStamp
+                                    time = parsedDate.time
                                 )
                                 onFinishClicked(record)
                                 Toast.makeText(
@@ -492,6 +499,7 @@ fun MasterCard(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+
                             negativeButton(
                                 text = "Cancel",
                                 textStyle = TextStyle(
@@ -506,7 +514,24 @@ fun MasterCard(
                     }
 
                     OutlinedButton(
-                        onClick = { confirmDialogState.show() },
+                        onClick = {
+
+                            val currentTimestamp = System.currentTimeMillis()
+                            val recordTime = "$date $time"
+                            val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                            val parsedDate = dateFormat.parse(recordTime)
+
+                            if (currentTimestamp >= parsedDate.time) {
+                                Toast.makeText(
+                                    context,
+                                    "Invalid record time.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                confirmDialogState.show()
+                            }
+
+                        },
                         shape = RoundedCornerShape(25.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = Pink100),
                         border = BorderStroke(1.dp, DarkPink),

@@ -37,6 +37,9 @@ fun UserRecord(record: Record?) {
     val formatter: DateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
     formatter.timeZone = TimeZone.getDefault()
     val dateString = formatter.format(Date(record!!.time!!))
+
+    val currentTime = System.currentTimeMillis()
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
