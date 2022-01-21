@@ -14,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marinanitockina.angelsnails.models.Record
@@ -43,10 +44,10 @@ fun UserRecord(record: Record?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .padding(start = 15.dp, end = 15.dp, top = 10.dp)
             .height(100.dp),
         shape = RoundedCornerShape(30.dp),
-        backgroundColor = Pink100,
+        backgroundColor = if (currentTime < record.time!!) Pink100 else Color.LightGray,
         border = BorderStroke(
             width = 2.dp,
             color = DarkPink
