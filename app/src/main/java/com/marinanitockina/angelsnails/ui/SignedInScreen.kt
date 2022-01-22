@@ -1,5 +1,6 @@
 package com.marinanitockina.angelsnails.ui
 
+import android.app.Activity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -8,10 +9,13 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.marinanitockina.angelsnails.models.Record
@@ -42,7 +46,11 @@ fun SignedInScreen(
             LoadingScreen()
         } else {
             when (userState.role) {
-                CLIENT -> ClientScreen(records = records, services = services, onSaveRecord = onSaveRecord)
+                CLIENT -> ClientScreen(
+                    records = records,
+                    services = services,
+                    onSaveRecord = onSaveRecord
+                )
                 MASTER -> MasterScreen()
                 ADMIN -> AdminScreen()
             }
@@ -62,6 +70,7 @@ fun LoggedInAppBar(userName: String = "User") {
         actions = {
 
             val logoutDialogState = rememberMaterialDialogState()
+            val activity = LocalContext.current as Activity
 
             MaterialDialog(
                 dialogState = logoutDialogState,
@@ -75,6 +84,11 @@ fun LoggedInAppBar(userName: String = "User") {
                         )
                     ) {
                         Firebase.auth.signOut()
+                        GoogleSignIn.getClient(
+                            activity,
+                            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                        )
+                            .signOut()
                     }
 
                     negativeButton(
