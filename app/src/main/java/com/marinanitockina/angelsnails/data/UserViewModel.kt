@@ -67,9 +67,8 @@ class UserViewModel : ViewModel() {
 
         repository.userRecordsCallback = { userRecordsList ->
             userRecordsState.clear()
-            userRecordsList.forEach {
-                userRecordsState[it.key] = it.value
-            }
+            userRecordsState.putAll(userRecordsList)
+            userRecordsState.toList().sortedBy { (_, value) -> value!!.time }.toMap()
             loadingState.value = false
         }
     }

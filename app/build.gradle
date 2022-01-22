@@ -93,7 +93,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:0.22.0-rc"
 
     /**
-     * Date and Time
+     * Date and Time dialogs
      */
     implementation "io.github.vanpra.compose-material-dialogs:datetime:0.6.2"
 
@@ -108,6 +108,11 @@ dependencies {
      * Play services
      */
     implementation 'com.google.android.gms:play-services-auth:20.0.1'
+
+    /**
+     * Lottie animations
+     */
+    implementation "com.airbnb.android:lottie-compose:4.2.2"
 
     /**
      * Tests
