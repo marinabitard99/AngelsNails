@@ -24,10 +24,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         FirebaseAuth.getInstance().addAuthStateListener { auth ->
+
             Log.d("Auth changed", auth.currentUser?.email ?: "null")
-            auth.currentUser?.email?.let { it ->
-                viewModel.fetchUserRole(it)
+            if (auth.currentUser != null) {
+                auth.currentUser?.email?.let { it ->
+                    viewModel.fetchUserRole(it)
+                }
+            } else {
+                viewModel.clearUserData()
             }
+
         }
 
         setContent {

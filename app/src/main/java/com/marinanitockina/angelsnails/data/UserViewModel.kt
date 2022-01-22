@@ -105,4 +105,10 @@ class UserViewModel : ViewModel() {
         repository.getUserRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
     }
 
+    fun clearUserData() {
+        accountState.value = null
+        serviceState.clear()
+        userRecordsState.clear()
+    }
+
 }
