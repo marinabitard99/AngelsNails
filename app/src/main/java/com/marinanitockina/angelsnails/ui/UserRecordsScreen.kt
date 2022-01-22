@@ -33,7 +33,7 @@ fun UserRecordsList(records: Map<String, Record?>) {
     if (records.isEmpty()) {
         EmptyRecordsList()
     } else {
-        LazyColumn {
+        LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
             items(items = records.values.toList()) { record ->
                 UserRecord(record = record)
             }
@@ -53,7 +53,7 @@ fun UserRecord(record: Record?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 15.dp, end = 15.dp, top = 10.dp)
+            .padding(start = 15.dp, end = 15.dp, top = 5.dp, bottom = 5.dp)
             .height(100.dp),
         shape = RoundedCornerShape(30.dp),
         backgroundColor = if (currentTime < record.time!!) Pink100 else Color.LightGray,
