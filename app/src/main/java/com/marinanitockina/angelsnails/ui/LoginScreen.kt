@@ -3,146 +3,59 @@ package com.marinanitockina.angelsnails.ui
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MailOutline
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.ExitToApp
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.marinanitockina.angelsnails.R
-import com.marinanitockina.angelsnails.data.UserViewModel
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
+import com.marinanitockina.angelsnails.ui.theme.DarkPink
 
 @Composable
-fun LoginScreen(viewModel: UserViewModel) {
-
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    Scaffold(
-        scaffoldState = rememberScaffoldState(snackbarHostState = snackbarHostState),
-        topBar = {
-            LoginToolbar()
-        },
-        content = {
-            EmailPasswordSignIn(viewModel = viewModel)
-        }
-    )
-}
-
-@Composable
-fun LoginToolbar() {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        TopAppBar(
-            backgroundColor = Color.White,
-            elevation = 1.dp,
-            title = {
-                Text(text = "Login")
-            },
-            navigationIcon = {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Rounded.ArrowBack,
-                        contentDescription = null,
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = { Firebase.auth.signOut() }) {
-                    Icon(
-                        imageVector = Icons.Rounded.ExitToApp,
-                        contentDescription = null,
-                    )
-                }
-            }
-        )
-//        if (state.status == LoadingState.Status.RUNNING) {
-//            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-//        }
-    }
-}
-
-@Composable
-fun EmailPasswordSignIn(viewModel: UserViewModel) {
-
-    var userEmail by remember { mutableStateOf("") }
-    var userPassword by remember { mutableStateOf("") }
+fun LoginScreen(loginMethod: (AuthCredential) -> Unit = {}) {
 
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         content = {
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = userEmail,
-                label = {
-                    Text(text = "Email")
-                },
-                onValueChange = {
-                    userEmail = it
-                }
+
+            Image(
+                painterResource(R.drawable.logo),
+                "Logo",
+                modifier = Modifier.padding(top = 100.dp, bottom = 300.dp)
             )
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
-                value = userPassword,
-                label = {
-                    Text(text = "Password")
-                },
-                onValueChange = {
-                    userPassword = it
-                }
-            )
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                enabled = userEmail.isNotEmpty() && userPassword.isNotEmpty(),
-                content = {
-                    Text(text = "Login")
-                },
-                onClick = {
-                    viewModel.signInWithEmailAndPassword(userEmail.trim(), userPassword.trim())
-                }
-            )
-
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.caption,
-                text = "Login with"
-            )
-
-            Spacer(modifier = Modifier.height(18.dp))
-
-            GoogleSignInButton(viewModel = viewModel)
+            GoogleSignInButton(loginMethod)
 
         }
     )
+
 }
 
 @Composable
-fun GoogleSignInButton(viewModel: UserViewModel) {
+fun GoogleSignInButton(loginMethod: (AuthCredential) -> Unit = {}) {
     val context = LocalContext.current
     val token = stringResource(R.string.default_web_client_id)
 
@@ -153,14 +66,14 @@ fun GoogleSignInButton(viewModel: UserViewModel) {
             try {
                 val account = task.getResult(ApiException::class.java)!!
                 val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
-                viewModel.signWithCredential(credential)
+                loginMethod(credential)
             } catch (e: ApiException) {
                 Log.w("TAG", "Google sign in failed", e)
             }
         }
 
     OutlinedButton(
-        border = ButtonDefaults.outlinedBorder.copy(width = 1.dp),
+        border = BorderStroke(1.dp, DarkPink),
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
@@ -186,7 +99,7 @@ fun GoogleSignInButton(viewModel: UserViewModel) {
                     )
                     Text(
                         style = MaterialTheme.typography.button,
-                        color = MaterialTheme.colors.onSurface,
+                        color = DarkPink,
                         text = "Sign in with Google"
                     )
                     Icon(
@@ -199,24 +112,13 @@ fun GoogleSignInButton(viewModel: UserViewModel) {
         }
     )
 
-//    when (state.status) {
-//        LoadingState.Status.SUCCESS -> {
-//            Text(text = "Success")
-//        }
-//        LoadingState.Status.FAILED -> {
-//            Text(text = state.msg ?: "Error")
-//        }
-//        else -> {}
-//    }
-
 }
 
-
-@Preview(name = "Regular Sign In", showBackground = true)
+@Preview(name = "Login screen", showBackground = true)
 @Composable
-fun RegularSignInPreview() {
+fun LoginScreenPreview() {
     AngelsNailsTheme {
-        EmailPasswordSignIn(viewModel = UserViewModel())
+        LoginScreen()
     }
 }
 
@@ -224,6 +126,6 @@ fun RegularSignInPreview() {
 @Composable
 fun GoogleButtonPreview() {
     AngelsNailsTheme {
-        GoogleSignInButton(viewModel = UserViewModel())
+        GoogleSignInButton()
     }
 }

@@ -51,7 +51,7 @@ fun AppScreen(viewModel: UserViewModel) {
     Surface(color = MaterialTheme.colors.background) {
         val currentUser = viewModel.accountState.value
         if (currentUser == null) {
-            LoginScreen(viewModel = viewModel)
+            LoginScreen(loginMethod = viewModel::signWithCredential)
         } else {
             SignedInScreen(
                 isLoading = viewModel.loadingState.value,

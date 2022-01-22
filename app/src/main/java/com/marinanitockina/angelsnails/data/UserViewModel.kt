@@ -73,16 +73,6 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    fun signInWithEmailAndPassword(email: String, password: String) = viewModelScope.launch {
-        try {
-            loadingState.value = true
-            Firebase.auth.signInWithEmailAndPassword(email, password)
-            loadingState.value = false
-        } catch (e: Exception) {
-            loadingState.value = true
-        }
-    }
-
     fun signWithCredential(credential: AuthCredential) {
         viewModelScope.launch {
             try {
