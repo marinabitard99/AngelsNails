@@ -7,7 +7,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.marinanitockina.angelsnails.ui.theme.Pink100
+import com.marinanitockina.angelsnails.ui.theme.DarkPink
 
 @Composable
 fun LoadingScreen() {
@@ -16,6 +16,6 @@ fun LoadingScreen() {
             .fillMaxWidth()
             .fillMaxSize()
     ) {
-        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = Pink100)
+        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = DarkPink)
     }
 }

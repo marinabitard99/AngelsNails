@@ -1,7 +1,6 @@
 package com.marinanitockina.angelsnails.data
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -18,16 +17,13 @@ import kotlinx.coroutines.launch
 class UserViewModel : ViewModel() {
 
     private val repository = UserRepository()
-//    val loadingState = MutableStateFlow(LoadingState.IDLE)
+
     val loadingState = mutableStateOf(false)
     var accountState: MutableState<UserState?> = mutableStateOf(null)
         private set
     var serviceState = mutableStateMapOf<String, Service?>()
         private set
     var userRecordsState = mutableStateMapOf<String, Record?>()
-    var unavailableServiceTimes = mutableStateListOf<Long>()
-        private set
-
 
     init {
         repository.userCallback = { user ->
@@ -42,12 +38,14 @@ class UserViewModel : ViewModel() {
             }
 
             accountState.value = UserState(FirebaseAuth.getInstance().currentUser!!, role)
+            loadingState.value = false
         }
 
         repository.servicesCallback = { serviceList ->
             serviceState.clear()
             serviceState.putAll(serviceList)
             repository.getServiceMasters()
+            loadingState.value = false
         }
 
         repository.serviceMastersCallback = { masterList ->
@@ -80,12 +78,13 @@ class UserViewModel : ViewModel() {
                 Firebase.auth.signInWithCredential(credential)
                 loadingState.value = false
             } catch (e: Exception) {
-                loadingState.value = true
+                loadingState.value = false
             }
         }
     }
 
     fun fetchUserRole(email: String) {
+        loadingState.value = true
         repository.getUserInfo(email)
     }
 

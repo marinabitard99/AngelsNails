@@ -6,10 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.runtime.Composable
@@ -31,7 +28,7 @@ import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 
 @Composable
-fun LoginScreen(loginMethod: (AuthCredential) -> Unit = {}) {
+fun LoginScreen(loginMethod: (AuthCredential) -> Unit = {}, isLoading: Boolean = false) {
 
     Column(
         modifier = Modifier
@@ -47,7 +44,11 @@ fun LoginScreen(loginMethod: (AuthCredential) -> Unit = {}) {
                 modifier = Modifier.padding(top = 100.dp, bottom = 300.dp)
             )
 
-            GoogleSignInButton(loginMethod)
+            if (!isLoading) {
+                GoogleSignInButton(loginMethod)
+            } else {
+                CircularProgressIndicator(color = DarkPink)
+            }
 
         }
     )
@@ -118,7 +119,7 @@ fun GoogleSignInButton(loginMethod: (AuthCredential) -> Unit = {}) {
 @Composable
 fun LoginScreenPreview() {
     AngelsNailsTheme {
-        LoginScreen()
+        LoginScreen(isLoading = false)
     }
 }
 
