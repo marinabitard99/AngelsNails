@@ -23,6 +23,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setFirebaseAuthStateListener()
+        setContent {
+            AngelsNailsTheme {
+                AppScreen(viewModel = viewModel)
+            }
+        }
+    }
+
+    private fun setFirebaseAuthStateListener() {
         FirebaseAuth.getInstance().addAuthStateListener { auth ->
 
             Log.d("Auth changed", auth.currentUser?.email ?: "null")
@@ -35,19 +44,13 @@ class MainActivity : ComponentActivity() {
             }
 
         }
-
-        setContent {
-            AngelsNailsTheme {
-                AppScreen(viewModel = viewModel)
-            }
-        }
     }
 
 }
 
 @ExperimentalFoundationApi
 @Composable
-fun AppScreen(viewModel: UserViewModel) {
+fun AppScreen(viewModel: UserViewModel = UserViewModel()) {
     Surface(color = MaterialTheme.colors.background) {
         val currentUser = viewModel.accountState.value
         if (currentUser == null) {
