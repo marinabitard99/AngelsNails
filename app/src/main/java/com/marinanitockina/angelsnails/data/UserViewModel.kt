@@ -28,8 +28,14 @@ class UserViewModel : ViewModel() {
     init {
         repository.userCallback = { user ->
             val role = when (user?.role) {
-                "master" -> UserState.Role.MASTER
-                "admin" -> UserState.Role.ADMIN
+                "master" -> {
+                    loadingState.value = false
+                    UserState.Role.MASTER
+                }
+                "admin" -> {
+                    loadingState.value = false
+                    UserState.Role.ADMIN
+                }
                 else -> {
                     repository.getUserRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
                     repository.getServices()
@@ -38,14 +44,12 @@ class UserViewModel : ViewModel() {
             }
 
             accountState.value = UserState(FirebaseAuth.getInstance().currentUser!!, role)
-            loadingState.value = false
         }
 
         repository.servicesCallback = { serviceList ->
             serviceState.clear()
             serviceState.putAll(serviceList)
             repository.getServiceMasters()
-            loadingState.value = false
         }
 
         repository.serviceMastersCallback = { masterList ->
