@@ -120,7 +120,7 @@ fun MasterRecord(record: Record?) {
                 fontSize = 18.sp
             )
             Text(
-                text = record.nameMaster!!,
+                text = record.email!!,
                 modifier = Modifier.align(Alignment.BottomStart),
                 color = DarkPink,
                 fontSize = 16.sp,
