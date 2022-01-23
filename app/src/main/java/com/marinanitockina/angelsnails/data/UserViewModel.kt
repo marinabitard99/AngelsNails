@@ -67,7 +67,7 @@ class UserViewModel : ViewModel() {
             loadingState.value = false
         }
 
-        repository.clientRecordsCallback = { userRecordsList ->
+        repository.recordsCallback = { userRecordsList ->
             userRecordsState.clear()
             userRecordsState.putAll(userRecordsList)
 //            userRecordsState.toList().sortedBy { (_, value) -> value!!.time }.toMap()

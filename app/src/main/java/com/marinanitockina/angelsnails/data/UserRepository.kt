@@ -102,7 +102,7 @@ class UserRepository {
                             recordsList[child.key!!] = it
                         }
                     }
-                    clientRecordsCallback(recordsList)
+                    recordsCallback(recordsList)
                 }
             }
 
@@ -143,7 +143,7 @@ class UserRepository {
                             recordsList[child.key!!] = it
                         }
                     }
-                    clientRecordsCallback(recordsList)
+                    recordsCallback(recordsList)
                 }
             }
 
@@ -156,6 +156,6 @@ class UserRepository {
     var userCallback: (User?) -> Unit = {}
     var servicesCallback: (Map<String, Service?>) -> Unit = {}
     var serviceMastersCallback: (Map<String, ServiceMaster?>) -> Unit = {}
-    var clientRecordsCallback: (Map<String, Record?>) -> Unit = {}
+    var recordsCallback: (Map<String, Record?>) -> Unit = {}
 
 }
