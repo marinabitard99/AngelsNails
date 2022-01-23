@@ -1,40 +1,86 @@
 package com.marinanitockina.angelsnails.ui.screenmaster
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 import com.marinanitockina.angelsnails.models.Record
 import com.marinanitockina.angelsnails.ui.generalcomposables.EmptyRecordsList
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.marinanitockina.angelsnails.ui.theme.Pink100
+import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 @Composable
 fun MasterScreen(records: Map<String, Record?>) {
-    MasterRecordsList(records = records)
+
+    val pagerState = rememberPagerState()
+    val pages = listOf("Today's records") //TODO CHANGE TO DATE
+    val scope = rememberCoroutineScope()
+
+    Column {
+        TabRow(
+            selectedTabIndex = pagerState.currentPage,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                    color = DarkPink
+                )
+            }
+        ) {
+            // Add tabs for all of our pages
+            pages.forEachIndexed { index, title ->
+                Tab(
+                    text = {
+                        Text(
+                            text = title,
+                            color = DarkPink,
+                            fontSize = 18.sp,
+                            style = MaterialTheme.typography.h6
+                        )
+                    },
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                )
+            }
+        }
+
+        HorizontalPager(
+            count = pages.size,
+            state = pagerState,
+            verticalAlignment = Alignment.Top
+        ) { page ->
+            when (page) {
+                0 ->  MasterRecordsList(records = records)
+            }
+        }
+
+    }
+
 }
 
 @Composable
 fun MasterRecordsList(records: Map<String, Record?>) {
     if (records.isEmpty()) {
-        EmptyRecordsList("No records for today!")
+        EmptyRecordsList("No records for today!") //TODO FOR THIS DAY
     } else {
         LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
             items(items = records.values.toList()) { record ->
