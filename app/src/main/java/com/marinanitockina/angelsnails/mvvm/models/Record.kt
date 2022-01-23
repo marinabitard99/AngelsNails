@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.models
+package com.marinanitockina.angelsnails.mvvm.models
 
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties

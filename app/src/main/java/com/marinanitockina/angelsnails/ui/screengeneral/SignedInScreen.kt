@@ -18,10 +18,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.marinanitockina.angelsnails.models.Record
-import com.marinanitockina.angelsnails.models.Service
-import com.marinanitockina.angelsnails.models.UserState
-import com.marinanitockina.angelsnails.models.UserState.Role.*
+import com.marinanitockina.angelsnails.mvvm.models.Record
+import com.marinanitockina.angelsnails.mvvm.models.Service
+import com.marinanitockina.angelsnails.mvvm.models.UserState
+import com.marinanitockina.angelsnails.mvvm.models.UserState.Role.*
 import com.marinanitockina.angelsnails.ui.generalcomposables.CenterTopAppBar
 import com.marinanitockina.angelsnails.ui.screenadmin.AdminScreen
 import com.marinanitockina.angelsnails.ui.screenclient.ClientScreen

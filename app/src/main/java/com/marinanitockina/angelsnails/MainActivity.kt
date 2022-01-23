@@ -10,7 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import com.google.firebase.auth.FirebaseAuth
-import com.marinanitockina.angelsnails.data.UserViewModel
+import com.marinanitockina.angelsnails.mvvm.UserViewModel
 import com.marinanitockina.angelsnails.ui.screengeneral.LoginScreen
 import com.marinanitockina.angelsnails.ui.screengeneral.SignedInScreen
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme

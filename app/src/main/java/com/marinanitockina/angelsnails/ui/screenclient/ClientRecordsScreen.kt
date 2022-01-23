@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.marinanitockina.angelsnails.models.Record
+import com.marinanitockina.angelsnails.mvvm.models.Record
 import com.marinanitockina.angelsnails.ui.generalcomposables.EmptyRecordsList
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.marinanitockina.angelsnails.ui.theme.Pink100

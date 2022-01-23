@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.data
+package com.marinanitockina.angelsnails.mvvm
 
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
@@ -7,10 +7,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.marinanitockina.angelsnails.models.Record
-import com.marinanitockina.angelsnails.models.Service
-import com.marinanitockina.angelsnails.models.ServiceMaster
-import com.marinanitockina.angelsnails.models.User
+import com.marinanitockina.angelsnails.mvvm.models.Record
+import com.marinanitockina.angelsnails.mvvm.models.Service
+import com.marinanitockina.angelsnails.mvvm.models.ServiceMaster
+import com.marinanitockina.angelsnails.mvvm.models.User
 
 class UserRepository {
 

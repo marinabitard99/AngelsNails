@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.data
+package com.marinanitockina.angelsnails.mvvm
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateMapOf
@@ -9,9 +9,9 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.marinanitockina.angelsnails.models.Record
-import com.marinanitockina.angelsnails.models.Service
-import com.marinanitockina.angelsnails.models.UserState
+import com.marinanitockina.angelsnails.mvvm.models.Record
+import com.marinanitockina.angelsnails.mvvm.models.Service
+import com.marinanitockina.angelsnails.mvvm.models.UserState
 import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {

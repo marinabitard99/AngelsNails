@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
-import com.marinanitockina.angelsnails.models.Record
+import com.marinanitockina.angelsnails.mvvm.models.Record
 import com.marinanitockina.angelsnails.ui.generalcomposables.EmptyRecordsList
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.marinanitockina.angelsnails.ui.theme.Pink100

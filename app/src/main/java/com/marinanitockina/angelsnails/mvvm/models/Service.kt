@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.models
+package com.marinanitockina.angelsnails.mvvm.models
 
 data class Service(
     val name: String? = null,

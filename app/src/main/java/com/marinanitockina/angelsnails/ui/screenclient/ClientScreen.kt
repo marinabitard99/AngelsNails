@@ -33,9 +33,9 @@ import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.google.firebase.auth.FirebaseAuth
 import com.marinanitockina.angelsnails.R
-import com.marinanitockina.angelsnails.models.Record
-import com.marinanitockina.angelsnails.models.Service
-import com.marinanitockina.angelsnails.models.ServiceMaster
+import com.marinanitockina.angelsnails.mvvm.models.Record
+import com.marinanitockina.angelsnails.mvvm.models.Service
+import com.marinanitockina.angelsnails.mvvm.models.ServiceMaster
 import com.marinanitockina.angelsnails.ui.generalcomposables.BottomOutlineTextField
 import com.marinanitockina.angelsnails.ui.generalcomposables.Chip
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
