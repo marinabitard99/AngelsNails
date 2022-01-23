@@ -29,7 +29,7 @@ class UserViewModel : ViewModel() {
         repository.userCallback = { user ->
             val role = when (user?.role) {
                 "master" -> {
-                    loadingState.value = false
+                    repository.getMasterRecords(user.id!!)
                     UserState.Role.MASTER
                 }
                 "admin" -> {
@@ -37,7 +37,7 @@ class UserViewModel : ViewModel() {
                     UserState.Role.ADMIN
                 }
                 else -> {
-                    repository.getUserRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
+                    repository.getClientRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
                     repository.getServices()
                     UserState.Role.CLIENT
                 }
@@ -67,7 +67,7 @@ class UserViewModel : ViewModel() {
             loadingState.value = false
         }
 
-        repository.userRecordsCallback = { userRecordsList ->
+        repository.clientRecordsCallback = { userRecordsList ->
             userRecordsState.clear()
             userRecordsState.putAll(userRecordsList)
 //            userRecordsState.toList().sortedBy { (_, value) -> value!!.time }.toMap()
@@ -95,7 +95,7 @@ class UserViewModel : ViewModel() {
     fun saveRecord(record: Record) {
         loadingState.value = true
         repository.saveRecord(record)
-        repository.getUserRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
+        repository.getClientRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
     }
 
     fun clearUserData() {

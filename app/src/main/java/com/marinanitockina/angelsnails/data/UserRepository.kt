@@ -27,6 +27,7 @@ class UserRepository {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { child ->
                         user = child.getValue(User::class.java)
+                        user?.id = child.key
                     }
                 }
                 userCallback(user)
@@ -88,7 +89,7 @@ class UserRepository {
         })
     }
 
-    fun getUserRecords(email: String) {
+    fun getClientRecords(email: String) {
         val recordsList = mutableMapOf<String, Record?>()
         val query = database.child("records").orderByChild("email").equalTo(email)
 
@@ -101,7 +102,7 @@ class UserRepository {
                             recordsList[child.key!!] = it
                         }
                     }
-                    userRecordsCallback(recordsList)
+                    clientRecordsCallback(recordsList)
                 }
             }
 
@@ -129,9 +130,32 @@ class UserRepository {
         database.updateChildren(childUpdates)
     }
 
+    fun getMasterRecords(masterId: String) {
+        val recordsList = mutableMapOf<String, Record?>()
+        val query = database.child("records").orderByChild("idMaster").equalTo(masterId)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { child ->
+                        val record = child.getValue(Record::class.java)
+                        record?.let {
+                            recordsList[child.key!!] = it
+                        }
+                    }
+                    clientRecordsCallback(recordsList)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("Ohsnap", "loadPost:onCancelled", error.toException())
+            }
+        })
+    }
+
     var userCallback: (User?) -> Unit = {}
     var servicesCallback: (Map<String, Service?>) -> Unit = {}
     var serviceMastersCallback: (Map<String, ServiceMaster?>) -> Unit = {}
-    var userRecordsCallback: (Map<String, Record?>) -> Unit = {}
+    var clientRecordsCallback: (Map<String, Record?>) -> Unit = {}
 
 }
