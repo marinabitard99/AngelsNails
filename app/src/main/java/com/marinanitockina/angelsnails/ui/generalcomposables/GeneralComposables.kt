@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.ui
+package com.marinanitockina.angelsnails.ui.generalcomposables
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.ui
+package com.marinanitockina.angelsnails.ui.screenadmin
 
 import androidx.compose.runtime.Composable
 

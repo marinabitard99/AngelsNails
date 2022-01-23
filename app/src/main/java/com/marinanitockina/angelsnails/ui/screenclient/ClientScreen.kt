@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.ui
+package com.marinanitockina.angelsnails.ui.screenclient
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
@@ -36,6 +36,8 @@ import com.marinanitockina.angelsnails.R
 import com.marinanitockina.angelsnails.models.Record
 import com.marinanitockina.angelsnails.models.Service
 import com.marinanitockina.angelsnails.models.ServiceMaster
+import com.marinanitockina.angelsnails.ui.generalcomposables.BottomOutlineTextField
+import com.marinanitockina.angelsnails.ui.generalcomposables.Chip
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.marinanitockina.angelsnails.ui.theme.Pink100
@@ -106,7 +108,7 @@ fun ClientScreen(
             verticalAlignment = Alignment.Top
         ) { page ->
             when (page) {
-                0 -> UserRecordsList(records = records)
+                0 -> ClientRecordsList(records = records)
                 1 -> ServiceList(services = services, onFinishClicked = onSaveRecord)
             }
         }
@@ -481,7 +483,7 @@ fun MasterCard(
 
                                 val recordTime = "$date $time"
                                 val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
-                                val parsedDate = dateFormat.parse(recordTime)
+                                val parsedDate = dateFormat.parse(recordTime)!!
 
                                 val record = Record(
                                     email = FirebaseAuth.getInstance().currentUser!!.email!!,
@@ -519,7 +521,7 @@ fun MasterCard(
                             val currentTimestamp = System.currentTimeMillis()
                             val recordTime = "$date $time"
                             val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
-                            val parsedDate = dateFormat.parse(recordTime)
+                            val parsedDate = dateFormat.parse(recordTime)!!
 
                             if (currentTimestamp >= parsedDate.time) {
                                 Toast.makeText(
@@ -629,19 +631,6 @@ fun ServiceItemPreview() {
                 "38.20€",
                 "https://www.lieliskadavana.lv/files/uploaded/programs/central_photo_20161019151003219.jpeg"
             )
-        )
-    )
-}
-
-@Preview("UserRecord")
-@Composable
-fun UserRecordPreview() {
-    UserRecord(
-        record = Record(
-            nameMaster = "Alla Zurabova",
-            nameService = "Manicure",
-            priceService = "35.00$",
-            time = 1500000000000
         )
     )
 }

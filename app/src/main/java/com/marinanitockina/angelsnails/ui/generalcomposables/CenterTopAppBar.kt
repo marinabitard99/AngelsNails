@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.ui
+package com.marinanitockina.angelsnails.ui.generalcomposables
 
 import android.content.res.Resources
 import android.util.TypedValue

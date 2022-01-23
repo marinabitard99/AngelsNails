@@ -11,8 +11,8 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import com.google.firebase.auth.FirebaseAuth
 import com.marinanitockina.angelsnails.data.UserViewModel
-import com.marinanitockina.angelsnails.ui.LoginScreen
-import com.marinanitockina.angelsnails.ui.SignedInScreen
+import com.marinanitockina.angelsnails.ui.screengeneral.LoginScreen
+import com.marinanitockina.angelsnails.ui.screengeneral.SignedInScreen
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 
 @ExperimentalFoundationApi

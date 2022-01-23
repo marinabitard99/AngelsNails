@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.ui
+package com.marinanitockina.angelsnails.ui.screengeneral
 
 import android.app.Activity
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,6 +22,10 @@ import com.marinanitockina.angelsnails.models.Record
 import com.marinanitockina.angelsnails.models.Service
 import com.marinanitockina.angelsnails.models.UserState
 import com.marinanitockina.angelsnails.models.UserState.Role.*
+import com.marinanitockina.angelsnails.ui.generalcomposables.CenterTopAppBar
+import com.marinanitockina.angelsnails.ui.screenadmin.AdminScreen
+import com.marinanitockina.angelsnails.ui.screenclient.ClientScreen
+import com.marinanitockina.angelsnails.ui.screenmaster.MasterScreen
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
@@ -51,7 +55,7 @@ fun SignedInScreen(
                     services = services,
                     onSaveRecord = onSaveRecord
                 )
-                MASTER -> MasterScreen()
+                MASTER -> MasterScreen(records = records)
                 ADMIN -> AdminScreen()
             }
         }

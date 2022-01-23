@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.ui
+package com.marinanitockina.angelsnails.ui.screengeneral
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
