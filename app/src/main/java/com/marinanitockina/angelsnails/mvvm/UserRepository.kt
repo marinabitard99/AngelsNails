@@ -26,8 +26,7 @@ class UserRepository {
                 var user: User? = null
                 if (snapshot.exists()) {
                     snapshot.children.forEach { child ->
-                        user = child.getValue(User::class.java)
-                        user?.id = child.key
+                        user = child.getValue(User::class.java)?.copy(id = child.key)
                     }
                 }
                 userCallback(user)
@@ -133,6 +132,29 @@ class UserRepository {
     fun getMasterRecords(masterId: String) {
         val recordsList = mutableMapOf<String, Record?>()
         val query = database.child("records").orderByChild("idMaster").equalTo(masterId)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { child ->
+                        val record = child.getValue(Record::class.java)
+                        record?.let {
+                            recordsList[child.key!!] = it
+                        }
+                    }
+                    recordsCallback(recordsList)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("Ohsnap", "loadPost:onCancelled", error.toException())
+            }
+        })
+    }
+
+    fun getAllRecords() {
+        val recordsList = mutableMapOf<String, Record?>()
+        val query = database.child("records")
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

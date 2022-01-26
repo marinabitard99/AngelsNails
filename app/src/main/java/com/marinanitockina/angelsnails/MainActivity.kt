@@ -63,6 +63,7 @@ fun AppScreen(viewModel: UserViewModel = UserViewModel()) {
                 isLoading = viewModel.loadingState.value,
                 userState = currentUser,
                 records = viewModel.userRecordsState,
+                masters = viewModel.masterListState,
                 services = viewModel.serviceState,
                 onSaveRecord = viewModel::saveRecord
             )

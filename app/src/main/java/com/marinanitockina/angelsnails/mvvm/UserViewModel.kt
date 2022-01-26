@@ -11,6 +11,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.marinanitockina.angelsnails.mvvm.models.Record
 import com.marinanitockina.angelsnails.mvvm.models.Service
+import com.marinanitockina.angelsnails.mvvm.models.ServiceMaster
 import com.marinanitockina.angelsnails.mvvm.models.UserState
 import kotlinx.coroutines.launch
 
@@ -24,6 +25,9 @@ class UserViewModel : ViewModel() {
     var serviceState = mutableStateMapOf<String, Service?>()
         private set
     var userRecordsState = mutableStateMapOf<String, Record?>()
+        private set
+    var masterListState = mutableStateMapOf<String, ServiceMaster?>()
+        private set
 
     init {
         repository.userCallback = { user ->
@@ -33,7 +37,8 @@ class UserViewModel : ViewModel() {
                     UserState.Role.MASTER
                 }
                 "admin" -> {
-                    loadingState.value = false
+                    repository.getAllRecords()
+                    repository.getServices()
                     UserState.Role.ADMIN
                 }
                 else -> {
@@ -53,6 +58,7 @@ class UserViewModel : ViewModel() {
         }
 
         repository.serviceMastersCallback = { masterList ->
+            masterListState.putAll(masterList)
             serviceState.forEach { service ->
                 service.value?.masterIds?.forEach { masterIdFromService ->
                     masterList.forEach { receivedMaster ->
@@ -102,6 +108,7 @@ class UserViewModel : ViewModel() {
         accountState.value = null
         serviceState.clear()
         userRecordsState.clear()
+        masterListState.clear()
     }
 
 }

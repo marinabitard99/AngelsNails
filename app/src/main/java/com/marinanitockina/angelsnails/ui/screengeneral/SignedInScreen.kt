@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.marinanitockina.angelsnails.mvvm.models.Record
 import com.marinanitockina.angelsnails.mvvm.models.Service
+import com.marinanitockina.angelsnails.mvvm.models.ServiceMaster
 import com.marinanitockina.angelsnails.mvvm.models.UserState
 import com.marinanitockina.angelsnails.mvvm.models.UserState.Role.*
 import com.marinanitockina.angelsnails.ui.generalcomposables.CenterTopAppBar
@@ -37,6 +38,7 @@ fun SignedInScreen(
     isLoading: Boolean = false,
     userState: UserState,
     records: Map<String, Record?> = emptyMap(),
+    masters: Map<String, ServiceMaster?> = emptyMap(),
     services: Map<String, Service?> = emptyMap(),
     onSaveRecord: (Record) -> Unit = {}
 ) {
@@ -56,7 +58,11 @@ fun SignedInScreen(
                     onSaveRecord = onSaveRecord
                 )
                 MASTER -> MasterScreen(records = records)
-                ADMIN -> AdminScreen()
+                ADMIN -> AdminScreen(
+                    records = records,
+                    masters = masters,
+                    services = services
+                )
             }
         }
     }
