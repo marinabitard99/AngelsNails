@@ -36,8 +36,10 @@ import com.marinanitockina.angelsnails.R
 import com.marinanitockina.angelsnails.mvvm.models.Record
 import com.marinanitockina.angelsnails.mvvm.models.Service
 import com.marinanitockina.angelsnails.mvvm.models.ServiceMaster
+import com.marinanitockina.angelsnails.mvvm.models.UserState
 import com.marinanitockina.angelsnails.ui.generalcomposables.BottomOutlineTextField
 import com.marinanitockina.angelsnails.ui.generalcomposables.Chip
+import com.marinanitockina.angelsnails.ui.screengeneral.RecordsList
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.marinanitockina.angelsnails.ui.theme.Pink100
@@ -108,7 +110,7 @@ fun ClientScreen(
             verticalAlignment = Alignment.Top
         ) { page ->
             when (page) {
-                0 -> ClientRecordsList(records = records)
+                0 -> RecordsList(records = records, role = UserState.Role.CLIENT)
                 1 -> ServiceList(services = services, onFinishClicked = onSaveRecord)
             }
         }

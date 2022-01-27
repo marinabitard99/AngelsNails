@@ -1,4 +1,4 @@
-package com.marinanitockina.angelsnails.ui.generalcomposables
+package com.marinanitockina.angelsnails.ui.screengeneral
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
