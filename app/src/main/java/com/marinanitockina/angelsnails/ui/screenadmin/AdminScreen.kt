@@ -312,7 +312,7 @@ fun AdminServiceItem(
     ) {
         Column {
             Text(
-                text = "Choose a master for ${service?.name?.lowercase() ?: ""}",
+                text = "Masters for ${service?.name?.lowercase() ?: ""}",
                 style = MaterialTheme.typography.h6,
                 color = DarkPink,
                 modifier = Modifier.padding(start = 9.dp)
