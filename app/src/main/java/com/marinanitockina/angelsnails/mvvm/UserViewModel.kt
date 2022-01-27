@@ -1,6 +1,7 @@
 package com.marinanitockina.angelsnails.mvvm
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -22,9 +23,9 @@ class UserViewModel : ViewModel() {
     val loadingState = mutableStateOf(false)
     var accountState: MutableState<UserState?> = mutableStateOf(null)
         private set
-    var serviceState = mutableStateMapOf<String, Service?>()
+    var serviceState = mutableStateListOf<Service?>()
         private set
-    var userRecordsState = mutableStateMapOf<String, Record?>()
+    var userRecordsState = mutableStateListOf<Record?>()
         private set
     var masterListState = mutableStateMapOf<String, ServiceMaster?>()
         private set
@@ -53,20 +54,17 @@ class UserViewModel : ViewModel() {
 
         repository.servicesCallback = { serviceList ->
             serviceState.clear()
-            serviceState.putAll(serviceList)
+            serviceState.addAll(serviceList)
             repository.getServiceMasters()
         }
 
         repository.serviceMastersCallback = { masterList ->
             masterListState.putAll(masterList)
             serviceState.forEach { service ->
-                service.value?.masterIds?.forEach { masterIdFromService ->
+                service?.masterIds?.forEach { masterIdFromService ->
                     masterList.forEach { receivedMaster ->
                         if (masterIdFromService.key == receivedMaster.key)
-                            service.value?.masters?.put(
-                                masterIdFromService.key,
-                                masterList.getValue(masterIdFromService.key)!!
-                            )
+                            service.masters[masterIdFromService.key] = masterList.getValue(masterIdFromService.key)!!
                     }
                 }
             }
@@ -75,8 +73,7 @@ class UserViewModel : ViewModel() {
 
         repository.recordsCallback = { userRecordsList ->
             userRecordsState.clear()
-            userRecordsState.putAll(userRecordsList)
-//            userRecordsState.toList().sortedBy { (_, value) -> value!!.time }.toMap()
+            userRecordsState.addAll(userRecordsList)
             loadingState.value = false
         }
     }

@@ -5,6 +5,7 @@ import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 data class Record(
+    val id: String? = null,
     val email: String? = null,
     val idMaster: String? = null,
     val nameMaster: String? = null,

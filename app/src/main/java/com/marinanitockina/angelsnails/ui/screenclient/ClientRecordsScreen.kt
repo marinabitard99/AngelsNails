@@ -28,12 +28,12 @@ import java.util.*
 
 
 @Composable
-fun ClientRecordsList(records: Map<String, Record?>) {
+fun ClientRecordsList(records: List<Record?> = emptyList()) {
     if (records.isEmpty()) {
         EmptyRecordsList("No records yet!")
     } else {
         LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
-            items(items = records.values.toList()) { record ->
+            items(items = records) { record ->
                 ClientRecord(record = record)
             }
         }

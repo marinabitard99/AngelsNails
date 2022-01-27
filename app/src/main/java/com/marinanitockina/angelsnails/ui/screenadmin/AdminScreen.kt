@@ -44,9 +44,9 @@ import java.util.*
 @ExperimentalFoundationApi
 @Composable
 fun AdminScreen(
-    records: Map<String, Record?> = emptyMap(),
+    records: List<Record?> = emptyList(),
     masters: Map<String, ServiceMaster?> = emptyMap(),
-    services: Map<String, Service?> = emptyMap(),
+    services: List<Service?> = emptyList(),
 ) {
     val pagerState = rememberPagerState()
     val pages = listOf("Records", "Masters", "Services")
@@ -99,12 +99,12 @@ fun AdminScreen(
 }
 
 @Composable
-fun AdminRecordsList(records: Map<String, Record?>) {
+fun AdminRecordsList(records: List<Record?> = emptyList()) {
     if (records.isEmpty()) {
         EmptyRecordsList("No records yet!")
     } else {
         LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
-            items(items = records.values.toList()) { record ->
+            items(items = records) { record ->
                 AdminRecord(record = record)
             }
         }
@@ -240,7 +240,7 @@ fun MasterItem(master: ServiceMaster?) {
 @ExperimentalFoundationApi
 @Composable
 fun AdminServiceList(
-    services: Map<String, Service?> = emptyMap(),
+    services: List<Service?> = emptyList(),
 ) {
     CompositionLocalProvider(
         LocalOverScrollConfiguration provides null
@@ -253,7 +253,7 @@ fun AdminServiceList(
                 bottom = 2.dp
             ),
         ) {
-            items(items = services.toList()) { service ->
+            items(items = services) { service ->
                 AdminServiceItem(service = service)
             }
         }
@@ -262,7 +262,7 @@ fun AdminServiceList(
 
 @Composable
 fun AdminServiceItem(
-    service: Pair<String, Service?> = Pair("", Service()),
+    service: Service? = Service(),
 ) {
 
     val extended = remember { mutableStateOf(false) }
@@ -277,7 +277,7 @@ fun AdminServiceItem(
     ) {
         Box {
             GlideImage(
-                imageModel = service.second?.pictureUrl,
+                imageModel = service?.pictureUrl,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp),
@@ -291,13 +291,13 @@ fun AdminServiceItem(
                 previewPlaceholder = R.drawable.cat
             )
             Chip(
-                text = service.second?.name ?: "",
+                text = service?.name ?: "",
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(10.dp)
             )
             Chip(
-                text = service.second?.price ?: "",
+                text = service?.price ?: "",
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(10.dp)
@@ -312,7 +312,7 @@ fun AdminServiceItem(
     ) {
         Column {
             Text(
-                text = "Choose a master for ${service.second?.name?.lowercase() ?: ""}",
+                text = "Choose a master for ${service?.name?.lowercase() ?: ""}",
                 style = MaterialTheme.typography.h6,
                 color = DarkPink,
                 modifier = Modifier.padding(start = 9.dp)
@@ -320,10 +320,10 @@ fun AdminServiceItem(
 
             LazyColumn(
                 modifier = Modifier.height(
-                    ((service.second?.masters?.size ?: 0) * 70).dp
+                    ((service?.masters?.size ?: 0) * 70).dp
                 )
             ) {
-                items(items = service.second?.masters?.toList() ?: emptyList()) { master ->
+                items(items = service?.masters?.toList() ?: emptyList()) { master ->
                     MasterItem(
                         master = master.second,
                     )

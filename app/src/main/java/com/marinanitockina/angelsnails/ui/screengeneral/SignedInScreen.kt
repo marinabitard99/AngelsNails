@@ -37,9 +37,9 @@ import com.vanpra.composematerialdialogs.title
 fun SignedInScreen(
     isLoading: Boolean = false,
     userState: UserState,
-    records: Map<String, Record?> = emptyMap(),
+    records: List<Record?> = emptyList(),
     masters: Map<String, ServiceMaster?> = emptyMap(),
-    services: Map<String, Service?> = emptyMap(),
+    services: List<Service?> = emptyList(),
     onSaveRecord: (Record) -> Unit = {}
 ) {
 

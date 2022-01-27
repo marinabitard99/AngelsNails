@@ -40,17 +40,15 @@ class UserRepository {
     }
 
     fun getServices() {
-        val serviceList = linkedMapOf<String, Service>()
+        val serviceList = mutableListOf<Service?>()
         val query = database.child("services")
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { child ->
-                        val service = child.getValue(Service::class.java)
-                        service?.let {
-                            serviceList[child.key!!] = it
-                        }
+                        val service = child.getValue(Service::class.java)?.copy(id = child.key)
+                        serviceList.add(service)
                     }
                     servicesCallback(serviceList)
                 }
@@ -89,17 +87,15 @@ class UserRepository {
     }
 
     fun getClientRecords(email: String) {
-        val recordsList = mutableMapOf<String, Record?>()
+        val recordsList = mutableListOf<Record?>()
         val query = database.child("records").orderByChild("email").equalTo(email)
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { child ->
-                        val record = child.getValue(Record::class.java)
-                        record?.let {
-                            recordsList[child.key!!] = it
-                        }
+                        val record = child.getValue(Record::class.java)?.copy(id = child.key)
+                        recordsList.add(record)
                     }
                     recordsCallback(recordsList)
                 }
@@ -130,17 +126,15 @@ class UserRepository {
     }
 
     fun getMasterRecords(masterId: String) {
-        val recordsList = mutableMapOf<String, Record?>()
+        val recordsList = mutableListOf<Record?>()
         val query = database.child("records").orderByChild("idMaster").equalTo(masterId)
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { child ->
-                        val record = child.getValue(Record::class.java)
-                        record?.let {
-                            recordsList[child.key!!] = it
-                        }
+                        val record = child.getValue(Record::class.java)?.copy(id = child.key)
+                        recordsList.add(record)
                     }
                     recordsCallback(recordsList)
                 }
@@ -153,17 +147,15 @@ class UserRepository {
     }
 
     fun getAllRecords() {
-        val recordsList = mutableMapOf<String, Record?>()
+        val recordsList = mutableListOf<Record?>()
         val query = database.child("records")
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { child ->
-                        val record = child.getValue(Record::class.java)
-                        record?.let {
-                            recordsList[child.key!!] = it
-                        }
+                        val record = child.getValue(Record::class.java)?.copy(id = child.key)
+                        recordsList.add(record)
                     }
                     recordsCallback(recordsList)
                 }
@@ -176,8 +168,8 @@ class UserRepository {
     }
 
     var userCallback: (User?) -> Unit = {}
-    var servicesCallback: (Map<String, Service?>) -> Unit = {}
+    var servicesCallback: (List<Service?>) -> Unit = {}
     var serviceMastersCallback: (Map<String, ServiceMaster?>) -> Unit = {}
-    var recordsCallback: (Map<String, Record?>) -> Unit = {}
+    var recordsCallback: (List<Record?>) -> Unit = {}
 
 }
