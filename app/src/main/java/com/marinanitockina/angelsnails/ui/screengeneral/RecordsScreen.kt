@@ -31,8 +31,7 @@ import java.util.*
 fun RecordsList(
     records: List<Record?> = emptyList(),
     role: UserState.Role = UserState.Role.CLIENT,
-    dateText: String = "",
-    calendar: Calendar? = null
+    dateText: String = ""
 ) {
     if (records.isEmpty()) {
         EmptyRecordsList("No records on $dateText")
