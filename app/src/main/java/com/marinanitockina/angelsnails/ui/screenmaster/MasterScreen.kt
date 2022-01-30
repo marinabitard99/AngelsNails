@@ -1,6 +1,5 @@
 package com.marinanitockina.angelsnails.ui.screenmaster
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -84,7 +83,6 @@ fun MasterScreen(records: List<Record?> = emptyList()) {
             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             val dateAsString = selectedDate.format(formatter)
 
-            calendar.clear()
             calendar.set(Calendar.DAY_OF_MONTH, dateAsString.substring(0,2).toInt())
             calendar.set(Calendar.MONTH, dateAsString.substring(3,5).toInt() - 1)
             calendar.set(Calendar.YEAR, dateAsString.substring(6).toInt())
@@ -92,8 +90,6 @@ fun MasterScreen(records: List<Record?> = emptyList()) {
             calendar.set(Calendar.MINUTE, 0)
             calendar.set(Calendar.SECOND, 0)
             calendar.set(Calendar.MILLISECOND, 0)
-
-            Log.d("selected date", "${dateAsString.substring(0,2).toInt()} ${dateAsString.substring(3,5).toInt() - 1} ${dateAsString.substring(6).toInt()}")
 
             formattedDate = selectedDate.format(formatter)
         }
