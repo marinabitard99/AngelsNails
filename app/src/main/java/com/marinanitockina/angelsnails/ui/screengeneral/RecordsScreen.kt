@@ -35,7 +35,7 @@ fun RecordsList(
     calendar: Calendar? = null
 ) {
     if (records.isEmpty()) {
-        EmptyRecordsList("No records for $dateText")
+        EmptyRecordsList("No records on $dateText")
     } else {
         LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
             items(items = records) { record ->
