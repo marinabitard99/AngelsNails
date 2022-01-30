@@ -1,10 +1,7 @@
 package com.marinanitockina.angelsnails.ui.screengeneral
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +23,6 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 @Composable
 fun RecordsList(
     records: List<Record?> = emptyList(),
@@ -36,7 +32,7 @@ fun RecordsList(
     if (records.isEmpty()) {
         EmptyRecordsList("No records on $dateText")
     } else {
-        LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
+        LazyColumn(modifier = Modifier.padding(top = 5.dp).fillMaxHeight()) {
             items(items = records) { record ->
                 RecordItem(record = record, role = role)
             }
