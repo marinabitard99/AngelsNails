@@ -17,7 +17,7 @@ import com.marinanitockina.angelsnails.R
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 
 @Composable
-fun EmptyRecordsList(caption: String = "") {
+fun EmptyRecordsList(caption: String = "No records yet!") {
     Box(
         modifier = Modifier
             .fillMaxSize()

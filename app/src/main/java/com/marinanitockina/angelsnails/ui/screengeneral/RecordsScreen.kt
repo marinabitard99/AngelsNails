@@ -30,10 +30,12 @@ import java.util.*
 @Composable
 fun RecordsList(
     records: List<Record?> = emptyList(),
-    role: UserState.Role = UserState.Role.CLIENT
+    role: UserState.Role = UserState.Role.CLIENT,
+    dateText: String = "",
+    calendar: Calendar? = null
 ) {
     if (records.isEmpty()) {
-        EmptyRecordsList("No records yet!") //TODO FOR THIS DAY
+        EmptyRecordsList("No records for $dateText")
     } else {
         LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
             items(items = records) { record ->
