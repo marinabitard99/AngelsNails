@@ -42,7 +42,7 @@ fun MasterScreen(records: List<Record?> = emptyList()) {
     var formattedDate: String by remember { mutableStateOf(df.format(calendar.time)) }
 
     val pagerState = rememberPagerState()
-    val pages = listOf(formattedDate)
+    val pages = listOf("Records on $formattedDate")
 
     MaterialDialog(
         dialogState = dateDialogState,
