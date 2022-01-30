@@ -59,7 +59,7 @@ fun ClientScreen(
                         scope.launch {
                             pagerState.animateScrollToPage(index)
                         }
-                    },
+                    }
                 )
             }
         }

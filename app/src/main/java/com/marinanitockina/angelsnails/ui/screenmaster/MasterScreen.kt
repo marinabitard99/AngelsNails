@@ -119,7 +119,7 @@ fun MasterScreen(records: List<Record?> = emptyList()) {
                     selected = pagerState.currentPage == index,
                     onClick = {
                         dateDialogState.show()
-                    },
+                    }
                 )
             }
         }
