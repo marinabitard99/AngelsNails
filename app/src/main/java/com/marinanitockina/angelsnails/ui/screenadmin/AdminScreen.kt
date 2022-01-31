@@ -163,11 +163,11 @@ fun AdminScreen(
             state = pagerState,
             verticalAlignment = Alignment.Top
         ) { page ->
-
-            val recordSorter = RecordSorter.DayRecordSorter()
-
             when (page) {
                 0 -> {
+
+                    val recordSorter = RecordSorter.DayRecordSorter()
+
                     RecordsList(
                         records = recordSorter.sortRecords(
                             date = calendar.time,
