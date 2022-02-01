@@ -22,7 +22,9 @@ sealed class RecordSorter {
     }
 
     class ClientRecordSorter : RecordSorter() {
+
         override fun sortRecords(date: Date, records: List<Record?>): List<Record?> {
+
             val upcomingRecords: MutableList<Record?> = records.filter {
                 (it!!.time ?: 0L > date.time)
             }.sortedWith(
@@ -35,6 +37,7 @@ sealed class RecordSorter {
                     record!!.time
                 })
             }
+
         }
 
     }
