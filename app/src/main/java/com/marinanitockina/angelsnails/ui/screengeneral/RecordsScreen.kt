@@ -1,6 +1,8 @@
 package com.marinanitockina.angelsnails.ui.screengeneral
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +25,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+@ExperimentalFoundationApi
 @Composable
 fun RecordsList(
     records: List<Record?> = emptyList(),
@@ -32,12 +35,42 @@ fun RecordsList(
     if (records.isEmpty()) {
         EmptyRecordsList("No records on $dateText")
     } else {
-        LazyColumn(modifier = Modifier.padding(top = 5.dp).fillMaxHeight()) {
-            items(items = records) { record ->
-                RecordItem(record = record, role = role)
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+        ) {
+
+            val date = Date()
+            val grouped = records.groupBy { it!!.time ?: 0L > date.time }
+
+            grouped.forEach { (isRecordUpcoming, records) ->
+
+                stickyHeader {
+                    RecordHeader(isUpcoming = isRecordUpcoming)
+                }
+
+                items(items = records) { record ->
+                    RecordItem(record = record, role = role)
+                }
+
             }
+
         }
     }
+}
+
+@Composable
+fun RecordHeader(isUpcoming: Boolean = true) {
+    Text(
+        text = if (isUpcoming) "Upcoming appointments" else "Past appointments",
+        style = MaterialTheme.typography.h6,
+        color = DarkPink,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colors.background)
+            .padding(start = 15.dp)
+    )
 }
 
 @Composable
