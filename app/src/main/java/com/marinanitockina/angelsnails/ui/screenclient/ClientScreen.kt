@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
+import com.marinanitockina.angelsnails.RecordSorter
 import com.marinanitockina.angelsnails.mvvm.models.Record
 import com.marinanitockina.angelsnails.mvvm.models.Service
 import com.marinanitockina.angelsnails.mvvm.models.UserState
@@ -20,6 +21,7 @@ import com.marinanitockina.angelsnails.ui.screengeneral.ServiceList
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import kotlinx.coroutines.launch
+import java.util.*
 
 @ExperimentalFoundationApi
 @Composable
@@ -70,8 +72,20 @@ fun ClientScreen(
             verticalAlignment = Alignment.Top
         ) { page ->
             when (page) {
-                0 -> RecordsList(records = records, role = UserState.Role.CLIENT)
-                1 -> ServiceList(services = services, onFinishClicked = onSaveRecord, role = UserState.Role.CLIENT)
+                0 -> {
+
+                    val recordSorter = RecordSorter.ClientRecordSorter()
+
+                    RecordsList(
+                        records = recordSorter.sortRecords(Date(), records),
+                        role = UserState.Role.CLIENT
+                    )
+                }
+                1 -> ServiceList(
+                    services = services,
+                    onFinishClicked = onSaveRecord,
+                    role = UserState.Role.CLIENT
+                )
             }
         }
 

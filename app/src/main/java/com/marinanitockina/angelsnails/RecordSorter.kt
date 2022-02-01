@@ -23,7 +23,18 @@ sealed class RecordSorter {
 
     class ClientRecordSorter : RecordSorter() {
         override fun sortRecords(date: Date, records: List<Record?>): List<Record?> {
-            TODO("Not yet implemented")
+            val upcomingRecords: MutableList<Record?> = records.filter {
+                (it!!.time ?: 0L > date.time)
+            }.sortedWith(
+                compareBy { it!!.time }
+            ).toMutableList()
+            return upcomingRecords.also {
+                it.addAll(records.filter { record ->
+                    (record!!.time ?: 0L <= date.time)
+                }.sortedByDescending { record ->
+                    record!!.time
+                })
+            }
         }
 
     }
