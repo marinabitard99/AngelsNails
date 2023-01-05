@@ -106,20 +106,20 @@ fun RecordItem(record: Record?, role: UserState.Role = UserState.Role.CLIENT) {
                 fontSize = 18.sp
             )
             Text(
+                text = "Rīga, Mangaļu iela 1",
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(top = 5.dp),
+                color = DarkPink,
+                fontSize = 16.sp,
+            )
+            Text(
                 text = if (role == UserState.Role.CLIENT) {
                     record.nameMaster!!
                 } else {
                     record.email!!
                 },
                 modifier = Modifier.align(Alignment.BottomStart),
-                color = DarkPink,
-                fontSize = 16.sp,
-            )
-            Text(
-                text = "Rīga, Mangaļu iela 1",
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(top = 5.dp),
                 color = DarkPink,
                 fontSize = 16.sp,
             )
