@@ -33,7 +33,11 @@ fun RecordsList(
     dateText: String = ""
 ) {
     if (records.isEmpty()) {
-        EmptyRecordsList("No records on $dateText")
+        if (role == UserState.Role.CLIENT) {
+            EmptyRecordsList()
+        } else {
+            EmptyRecordsList("No records on $dateText")
+        }
     } else {
 
         LazyColumn(
