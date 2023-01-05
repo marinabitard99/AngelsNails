@@ -312,10 +312,14 @@ fun MasterItem(
                                     val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
                                     val parsedDate = dateFormat.parse(recordTime)!!
 
+                                    val currentUser = FirebaseAuth.getInstance().currentUser!!
+
                                     val record = Record(
-                                        email = FirebaseAuth.getInstance().currentUser!!.email!!,
+                                        emailClient = currentUser.email!!,
+                                        phoneClient = currentUser.phoneNumber,
                                         idMaster = master.first,
                                         nameMaster = master.second.name,
+                                        phoneMaster = master.second.phone,
                                         idService = serviceId,
                                         nameService = serviceName,
                                         priceService = servicePrice,

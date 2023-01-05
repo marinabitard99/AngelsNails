@@ -88,7 +88,7 @@ class UserRepository {
 
     fun getClientRecords(email: String) {
         val recordsList = mutableListOf<Record?>()
-        val query = database.child("records").orderByChild("email").equalTo(email)
+        val query = database.child("records").orderByChild("emailClient").equalTo(email)
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

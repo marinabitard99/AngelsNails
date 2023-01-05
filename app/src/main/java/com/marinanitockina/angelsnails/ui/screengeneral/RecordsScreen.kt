@@ -168,9 +168,9 @@ fun RecordItem(
             )
             Text(
                 text = if (role == UserState.Role.CLIENT) {
-                    record.nameMaster!!
+                    "${record.nameMaster!!} - ${record.phoneMaster!!}"
                 } else {
-                    record.email!!
+                    "${record.nameClient!!} - ${record.phoneClient!!}"
                 },
                 modifier = Modifier.align(Alignment.BottomStart),
                 color = DarkPink,
@@ -201,10 +201,13 @@ fun RecordItem(
 fun ClientRecordPreview() {
     RecordItem(
         record = Record(
-            email = "test@test.com",
+            emailClient = "test@test.com",
             nameMaster = "Alla Zurabova",
             nameService = "Manicure",
             priceService = "35.00$",
+            nameClient = "Client 1",
+            phoneClient = "22222222",
+            phoneMaster = 232323224L,
             time = 1500000000000
         ),
         role = UserState.Role.CLIENT
@@ -216,10 +219,13 @@ fun ClientRecordPreview() {
 fun MasterRecordPreview() {
     RecordItem(
         record = Record(
-            email = "test@test.com",
+            emailClient = "test@test.com",
             nameMaster = "Alla Zurabova",
             nameService = "Manicure",
             priceService = "35.00$",
+            nameClient = "Client 1",
+            phoneClient = "22222222",
+            phoneMaster = 232323224L,
             time = 1500000000000
         ),
         role = UserState.Role.MASTER
@@ -231,10 +237,13 @@ fun MasterRecordPreview() {
 fun AdminRecordPreview() {
     RecordItem(
         record = Record(
-            email = "test@test.com",
+            emailClient = "test@test.com",
             nameMaster = "Alla Zurabova",
             nameService = "Manicure",
             priceService = "35.00$",
+            nameClient = "Client 1",
+            phoneClient = "22222222",
+            phoneMaster = 232323224L,
             time = 2500000000000
         ),
         role = UserState.Role.ADMIN
