@@ -22,7 +22,6 @@ import com.marinanitockina.angelsnails.mvvm.models.Record
 import com.marinanitockina.angelsnails.mvvm.models.Service
 import com.marinanitockina.angelsnails.mvvm.models.ServiceMaster
 import com.marinanitockina.angelsnails.mvvm.models.UserState
-import com.marinanitockina.angelsnails.mvvm.models.UserState.Role.*
 import com.marinanitockina.angelsnails.ui.generalcomposables.CenterTopAppBar
 import com.marinanitockina.angelsnails.ui.screenadmin.AdminScreen
 import com.marinanitockina.angelsnails.ui.screenclient.ClientScreen
@@ -52,13 +51,13 @@ fun SignedInScreen(
             LoadingScreen()
         } else {
             when (userState.role) {
-                CLIENT -> ClientScreen(
+                UserState.Role.CLIENT -> ClientScreen(
                     records = records,
                     services = services,
                     onSaveRecord = onSaveRecord
                 )
-                MASTER -> MasterScreen(records = records)
-                ADMIN -> AdminScreen(
+                UserState.Role.MASTER -> MasterScreen(records = records)
+                UserState.Role.ADMIN -> AdminScreen(
                     records = records,
                     masters = masters,
                     services = services
@@ -111,7 +110,7 @@ fun LoggedInAppBar(userName: String = "User") {
                     )
                 }
             ) {
-                title("Do you sure you want to log out?")
+                title("Are you sure you want to log out?")
             }
 
             IconButton(onClick = { logoutDialogState.show() }) {
