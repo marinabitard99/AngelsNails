@@ -65,7 +65,8 @@ fun AppScreen(viewModel: UserViewModel = UserViewModel()) {
                 records = viewModel.userRecordsState,
                 masters = viewModel.masterListState,
                 services = viewModel.serviceState,
-                onSaveRecord = viewModel::saveRecord
+                onSaveRecord = viewModel::saveRecord,
+                onDeleteRecord = viewModel::deleteRecord
             )
         }
     }

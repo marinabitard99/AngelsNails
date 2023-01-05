@@ -31,7 +31,10 @@ import java.util.*
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun MasterScreen(records: List<Record?> = emptyList()) {
+fun MasterScreen(
+    records: List<Record?> = emptyList(),
+    onDeleteRecord: (String, UserState.Role) -> Unit = { _, _ -> }
+) {
 
     val dateDialogState = rememberMaterialDialogState()
 
@@ -86,8 +89,8 @@ fun MasterScreen(records: List<Record?> = emptyList()) {
             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             val dateAsString = selectedDate.format(formatter)
 
-            calendar.set(Calendar.DAY_OF_MONTH, dateAsString.substring(0,2).toInt())
-            calendar.set(Calendar.MONTH, dateAsString.substring(3,5).toInt() - 1)
+            calendar.set(Calendar.DAY_OF_MONTH, dateAsString.substring(0, 2).toInt())
+            calendar.set(Calendar.MONTH, dateAsString.substring(3, 5).toInt() - 1)
             calendar.set(Calendar.YEAR, dateAsString.substring(6).toInt())
             calendar.set(Calendar.HOUR_OF_DAY, 0)
             calendar.set(Calendar.MINUTE, 0)
@@ -141,8 +144,12 @@ fun MasterScreen(records: List<Record?> = emptyList()) {
                         records = recordSorter.sortRecords(
                             date = calendar.time,
                             records = records
-                        ), role = UserState.Role.MASTER, dateText = formattedDate
+                        ),
+                        role = UserState.Role.MASTER,
+                        dateText = formattedDate,
+                        onDeleteRecord = onDeleteRecord
                     )
+
                 }
             }
         }

@@ -49,7 +49,12 @@ class UserViewModel : ViewModel() {
                 }
             }
 
-            accountState.value = UserState(FirebaseAuth.getInstance().currentUser!!, role)
+            accountState.value = if (role == UserState.Role.MASTER) {
+                UserState.MasterState(FirebaseAuth.getInstance().currentUser!!, role, user?.id!!)
+            } else {
+                UserState.ClientState(FirebaseAuth.getInstance().currentUser!!, role)
+            }
+
         }
 
         repository.servicesCallback = { serviceList ->
@@ -99,6 +104,18 @@ class UserViewModel : ViewModel() {
         loadingState.value = true
         repository.saveRecord(record)
         repository.getClientRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
+    }
+
+    fun deleteRecord(recordId: String, role: UserState.Role) {
+        repository.deleteRecord(recordId)
+        when (role) {
+            UserState.Role.CLIENT -> repository.getClientRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
+            UserState.Role.MASTER -> {
+                val accountState = accountState.value as UserState.MasterState
+                repository.getMasterRecords(accountState.masterId)
+            }
+            UserState.Role.ADMIN -> repository.getAllRecords()
+        }
     }
 
     fun clearUserData() {

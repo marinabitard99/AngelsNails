@@ -38,6 +38,7 @@ fun AdminScreen(
     records: List<Record?> = emptyList(),
     masters: Map<String, ServiceMaster?> = emptyMap(),
     services: List<Service?> = emptyList(),
+    onDeleteRecord: (String, UserState.Role) -> Unit = { _, _ -> }
 ) {
 
     val dateDialogState = rememberMaterialDialogState()
@@ -108,7 +109,7 @@ fun AdminScreen(
         }
     }
 
-    when(pagerState.currentPage) {
+    when (pagerState.currentPage) {
         0 -> {
             openCalendar = true
             pages[0] = formattedDate
@@ -172,7 +173,10 @@ fun AdminScreen(
                         records = recordSorter.sortRecords(
                             date = calendar.time,
                             records = records
-                        ), role = UserState.Role.ADMIN, dateText = formattedDate
+                        ),
+                        role = UserState.Role.ADMIN,
+                        dateText = formattedDate,
+                        onDeleteRecord = onDeleteRecord
                     )
                 }
                 1 -> {

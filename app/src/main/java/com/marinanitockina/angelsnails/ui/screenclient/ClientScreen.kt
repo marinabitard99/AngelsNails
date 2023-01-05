@@ -28,7 +28,8 @@ import java.util.*
 fun ClientScreen(
     records: List<Record?> = emptyList(),
     services: List<Service?> = emptyList(),
-    onSaveRecord: (Record) -> Unit = {}
+    onSaveRecord: (Record) -> Unit = {},
+    onDeleteRecord: (String, UserState.Role) -> Unit = { _, _ -> }
 ) {
 
     val pagerState = rememberPagerState()
@@ -78,14 +79,17 @@ fun ClientScreen(
 
                     RecordsList(
                         records = recordSorter.sortRecords(Date(), records),
-                        role = UserState.Role.CLIENT
+                        role = UserState.Role.CLIENT,
+                        onDeleteRecord = onDeleteRecord
                     )
                 }
+
                 1 -> ServiceList(
                     services = services,
                     onFinishClicked = onSaveRecord,
                     role = UserState.Role.CLIENT
                 )
+
             }
         }
 

@@ -50,8 +50,8 @@ class UserRepository {
                         val service = child.getValue(Service::class.java)?.copy(id = child.key)
                         serviceList.add(service)
                     }
-                    servicesCallback(serviceList)
                 }
+                servicesCallback(serviceList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -76,8 +76,8 @@ class UserRepository {
                             mastersList[child.key!!] = it
                         }
                     }
-                    serviceMastersCallback(mastersList)
                 }
+                serviceMastersCallback(mastersList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -97,8 +97,8 @@ class UserRepository {
                         val record = child.getValue(Record::class.java)?.copy(id = child.key)
                         recordsList.add(record)
                     }
-                    recordsCallback(recordsList)
                 }
+                recordsCallback(recordsList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -136,8 +136,8 @@ class UserRepository {
                         val record = child.getValue(Record::class.java)?.copy(id = child.key)
                         recordsList.add(record)
                     }
-                    recordsCallback(recordsList)
                 }
+                recordsCallback(recordsList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -157,14 +157,18 @@ class UserRepository {
                         val record = child.getValue(Record::class.java)?.copy(id = child.key)
                         recordsList.add(record)
                     }
-                    recordsCallback(recordsList)
                 }
+                recordsCallback(recordsList)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.w("Ohsnap", "loadPost:onCancelled", error.toException())
             }
         })
+    }
+
+    fun deleteRecord(recordId: String) {
+        database.child("records").child(recordId).removeValue()
     }
 
     var userCallback: (User?) -> Unit = {}

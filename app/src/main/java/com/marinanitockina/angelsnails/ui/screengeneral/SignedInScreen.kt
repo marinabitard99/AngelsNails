@@ -39,7 +39,8 @@ fun SignedInScreen(
     records: List<Record?> = emptyList(),
     masters: Map<String, ServiceMaster?> = emptyMap(),
     services: List<Service?> = emptyList(),
-    onSaveRecord: (Record) -> Unit = {}
+    onSaveRecord: (Record) -> Unit = {},
+    onDeleteRecord: (String, UserState.Role) -> Unit = { _, _ -> }
 ) {
 
     Scaffold(
@@ -54,13 +55,18 @@ fun SignedInScreen(
                 UserState.Role.CLIENT -> ClientScreen(
                     records = records,
                     services = services,
-                    onSaveRecord = onSaveRecord
+                    onSaveRecord = onSaveRecord,
+                    onDeleteRecord = onDeleteRecord
                 )
-                UserState.Role.MASTER -> MasterScreen(records = records)
+                UserState.Role.MASTER -> MasterScreen(
+                    records = records,
+                    onDeleteRecord = onDeleteRecord
+                )
                 UserState.Role.ADMIN -> AdminScreen(
                     records = records,
                     masters = masters,
-                    services = services
+                    services = services,
+                    onDeleteRecord = onDeleteRecord
                 )
             }
         }
