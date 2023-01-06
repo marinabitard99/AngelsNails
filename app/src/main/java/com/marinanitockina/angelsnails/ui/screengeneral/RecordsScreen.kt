@@ -99,8 +99,7 @@ fun RecordItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 15.dp, end = 15.dp, top = 5.dp, bottom = 5.dp)
-            .height(100.dp),
+            .padding(start = 15.dp, end = 15.dp, top = 5.dp, bottom = 5.dp),
         shape = RoundedCornerShape(30.dp),
         backgroundColor = if (currentTime < record.time!!) Pink100 else Color.LightGray,
         border = BorderStroke(
@@ -108,91 +107,124 @@ fun RecordItem(
             color = DarkPink
         )
     ) {
-        Box(modifier = Modifier.padding(horizontal = 20.dp, vertical = 15.dp)) {
-            if (currentTime < record.time) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 15.dp)
+        ) {
 
-                val deleteRecordDialogState = rememberMaterialDialogState()
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
 
-                Icon(
-                    imageVector = Icons.Rounded.Delete,
-                    contentDescription = "Delete record",
-                    tint = DarkPink,
-                    modifier = Modifier
-                        .clickable {
-                            deleteRecordDialogState.show()
-                        }
-                        .align(Alignment.TopEnd)
+                Text(
+                    text = "${record.nameService!!} - $dateString",
+                    style = MaterialTheme.typography.h6,
+                    color = DarkPink,
+                    fontSize = 18.sp
                 )
 
-                MaterialDialog(
-                    dialogState = deleteRecordDialogState,
-                    buttons = {
-                        positiveButton(
-                            text = "Yes",
-                            textStyle = TextStyle(
-                                color = DarkPink,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        ) {
-                            onDeleteRecord(record.id!!, role)
-                        }
+                if (currentTime < record.time) {
 
-                        negativeButton(
-                            text = "Cancel",
-                            textStyle = TextStyle(
-                                color = DarkPink,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
+                    val deleteRecordDialogState = rememberMaterialDialogState()
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Icon(
+                        imageVector = Icons.Rounded.Delete,
+                        contentDescription = "Delete record",
+                        tint = DarkPink,
+                        modifier = Modifier
+                            .clickable {
+                                deleteRecordDialogState.show()
+                            }
+                            .padding(0.dp)
+                    )
+
+                    MaterialDialog(
+                        dialogState = deleteRecordDialogState,
+                        buttons = {
+                            positiveButton(
+                                text = "Yes",
+                                textStyle = TextStyle(
+                                    color = DarkPink,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                onDeleteRecord(record.id!!, role)
+                            }
+
+                            negativeButton(
+                                text = "Cancel",
+                                textStyle = TextStyle(
+                                    color = DarkPink,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
                             )
-                        )
+                        }
+                    ) {
+                        title("Are you sure you want to delete your record?")
                     }
-                ) {
-                    title("Are you sure you want to delete your record?")
                 }
+
             }
-            Text(
-                text = "${record.nameService!!} - $dateString",
-                modifier = Modifier.align(Alignment.TopStart),
-                style = MaterialTheme.typography.h6,
-                color = DarkPink,
-                fontSize = 18.sp
-            )
-            Text(
-                text = "Rīga, Mangaļu iela 1",
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(top = 5.dp),
-                color = DarkPink,
-                fontSize = 16.sp,
-            )
-            Text(
-                text = if (role == UserState.Role.CLIENT) {
-                    "${record.nameMaster!!} - ${record.phoneMaster!!}"
-                } else {
-                    "${record.nameClient!!} - ${record.phoneClient!!}"
-                },
-                modifier = Modifier.align(Alignment.BottomStart),
-                color = DarkPink,
-                fontSize = 16.sp,
-            )
-            if (role == UserState.Role.ADMIN) {
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
                 Text(
-                    text = record.nameMaster!!,
+                    text = "Rīga, Mangaļu iela 1",
                     modifier = Modifier
-                        .align(Alignment.CenterEnd)
                         .padding(top = 5.dp),
                     color = DarkPink,
                     fontSize = 16.sp,
                 )
+
+                if (role == UserState.Role.ADMIN) {
+                    Text(
+                        text = record.nameMaster!!,
+                        modifier = Modifier
+                            .padding(top = 5.dp),
+                        color = DarkPink,
+                        fontSize = 16.sp,
+                    )
+                }
+
             }
-            Text(
-                text = record.priceService!!,
-                modifier = Modifier.align(Alignment.BottomEnd),
-                color = DarkPink,
-                fontSize = 16.sp,
-            )
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Text(
+                    text = if (role == UserState.Role.CLIENT) {
+                        "${record.nameMaster!!} - ${record.phoneMaster!!}"
+                    } else {
+                        record.phoneClient?.let {
+                            "${record.nameClient!!} - $it"
+                        } ?: run {
+                            "${record.nameClient!!}\n${record.emailClient}"
+                        }
+                    },
+                    color = DarkPink,
+                    fontSize = 16.sp,
+                )
+
+                Text(
+                    text = record.priceService!!,
+                    color = DarkPink,
+                    fontSize = 16.sp,
+                    modifier = Modifier.align(Alignment.Bottom)
+                )
+            }
+
         }
+
     }
 }
 
@@ -242,7 +274,6 @@ fun AdminRecordPreview() {
             nameService = "Manicure",
             priceService = "35.00$",
             nameClient = "Client 1",
-            phoneClient = "22222222",
             phoneMaster = 232323224L,
             time = 2500000000000
         ),
