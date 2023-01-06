@@ -41,6 +41,7 @@ import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.TimePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
+import com.vanpra.composematerialdialogs.message
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import com.vanpra.composematerialdialogs.title
 import java.text.SimpleDateFormat
@@ -344,10 +345,7 @@ fun MasterItem(
                             }
                         ) {
                             title("Do you want to finish the reservation?")
-                            Text(
-                                text = "After submitting, please wait for the confirmation letter on your email.",
-                                modifier = Modifier.padding(horizontal = 25.dp)
-                            )
+                            message("After submitting, please wait for the confirmation letter on your email.")
                         }
 
                         OutlinedButton(
