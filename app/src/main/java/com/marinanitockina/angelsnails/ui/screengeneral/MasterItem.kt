@@ -344,6 +344,10 @@ fun MasterItem(
                             }
                         ) {
                             title("Do you want to finish the reservation?")
+                            Text(
+                                text = "After submitting, please wait for the confirmation letter on your email.",
+                                modifier = Modifier.padding(horizontal = 25.dp)
+                            )
                         }
 
                         OutlinedButton(
