@@ -318,6 +318,7 @@ fun MasterItem(
                                     val record = Record(
                                         emailClient = currentUser.email!!,
                                         phoneClient = currentUser.phoneNumber,
+                                        nameClient = currentUser.displayName,
                                         idMaster = master.first,
                                         nameMaster = master.second.name,
                                         phoneMaster = master.second.phone,
