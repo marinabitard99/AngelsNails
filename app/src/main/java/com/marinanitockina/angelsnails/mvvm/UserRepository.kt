@@ -16,6 +16,7 @@ class UserRepository {
 
     private val database: DatabaseReference = Firebase.database.reference
 
+    // Database request for receiving user's info based on their email
     fun getUserInfo(email: String) {
         val query = database.child("staff")
             .orderByChild("email")
@@ -39,6 +40,7 @@ class UserRepository {
         })
     }
 
+    // Database request for getting all services
     fun getServices() {
         val serviceList = mutableListOf<Service?>()
         val query = database.child("services")
@@ -61,6 +63,7 @@ class UserRepository {
         })
     }
 
+    // Database request for getting all masters
     fun getServiceMasters() {
         val mastersList = mutableMapOf<String, ServiceMaster?>()
         val query = database.child("staff")
@@ -86,6 +89,7 @@ class UserRepository {
         })
     }
 
+    // Database request for getting records based on client's email
     fun getClientRecords(email: String) {
         val recordsList = mutableListOf<Record?>()
         val query = database.child("records").orderByChild("emailClient").equalTo(email)
@@ -109,6 +113,7 @@ class UserRepository {
 
     }
 
+    // Database request for saving new record
     fun saveRecord(record: Record) {
         val key = database.child("records").push().key
         if (key == null) {
@@ -125,6 +130,7 @@ class UserRepository {
         database.updateChildren(childUpdates)
     }
 
+    // Database request for getting records based on master's id
     fun getMasterRecords(masterId: String) {
         val recordsList = mutableListOf<Record?>()
         val query = database.child("records").orderByChild("idMaster").equalTo(masterId)
@@ -146,6 +152,7 @@ class UserRepository {
         })
     }
 
+    // Database request for getting all records
     fun getAllRecords() {
         val recordsList = mutableListOf<Record?>()
         val query = database.child("records")
@@ -167,13 +174,18 @@ class UserRepository {
         })
     }
 
+    // Database request for deleting records by its id
     fun deleteRecord(recordId: String) {
         database.child("records").child(recordId).removeValue()
     }
 
+    // Callback used when getting user info from database
     var userCallback: (User?) -> Unit = {}
+    // Callback used when getting service info from database
     var servicesCallback: (List<Service?>) -> Unit = {}
+    // Callback used when getting master info from database
     var serviceMastersCallback: (Map<String, ServiceMaster?>) -> Unit = {}
+    // Callback used when getting records from database
     var recordsCallback: (List<Record?>) -> Unit = {}
 
 }

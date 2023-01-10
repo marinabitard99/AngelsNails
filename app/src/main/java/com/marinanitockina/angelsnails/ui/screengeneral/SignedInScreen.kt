@@ -31,6 +31,7 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import com.vanpra.composematerialdialogs.title
 
+// Screen that shows up when user is logged in
 @ExperimentalFoundationApi
 @Composable
 fun SignedInScreen(
@@ -49,19 +50,24 @@ fun SignedInScreen(
         }
     ) {
         if (isLoading) {
+            // Show loading screen if app is loading data
             LoadingScreen()
         } else {
+            // For logged in users:
             when (userState.role) {
+                // If user is client, show them Client Screen
                 UserState.Role.CLIENT -> ClientScreen(
                     records = records,
                     services = services,
                     onSaveRecord = onSaveRecord,
                     onDeleteRecord = onDeleteRecord
                 )
+                // If user is master, show them Master Screen
                 UserState.Role.MASTER -> MasterScreen(
                     records = records,
                     onDeleteRecord = onDeleteRecord
                 )
+                // If user is admin, show them Admin Screen
                 UserState.Role.ADMIN -> AdminScreen(
                     records = records,
                     masters = masters,
@@ -74,6 +80,7 @@ fun SignedInScreen(
 
 }
 
+// App bar with centered text
 @Composable
 fun LoggedInAppBar(userName: String = "User") {
     CenterTopAppBar(
@@ -87,6 +94,7 @@ fun LoggedInAppBar(userName: String = "User") {
             val logoutDialogState = rememberMaterialDialogState()
             val activity = LocalContext.current as Activity
 
+            // Dialog for signing off the app
             MaterialDialog(
                 dialogState = logoutDialogState,
                 buttons = {
@@ -119,6 +127,7 @@ fun LoggedInAppBar(userName: String = "User") {
                 title("Are you sure you want to log out?")
             }
 
+            // Icon for logging out
             IconButton(onClick = { logoutDialogState.show() }) {
                 Icon(
                     imageVector = Icons.Rounded.ExitToApp,

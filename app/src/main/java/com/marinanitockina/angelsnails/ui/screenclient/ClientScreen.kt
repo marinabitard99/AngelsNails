@@ -23,6 +23,7 @@ import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import kotlinx.coroutines.launch
 import java.util.*
 
+// UI to show when user is a client
 @ExperimentalFoundationApi
 @Composable
 fun ClientScreen(
@@ -32,10 +33,13 @@ fun ClientScreen(
     onDeleteRecord: (String, UserState.Role) -> Unit = { _, _ -> }
 ) {
 
+    // State for holding current selected page
     val pagerState = rememberPagerState()
     val pages = listOf("My Records", "Book a Service")
+    // CoroutineScope for changing pages programmatically
     val scope = rememberCoroutineScope()
 
+    // Column that contains TabRow and HorizontalPager
     Column {
         TabRow(
             selectedTabIndex = pagerState.currentPage,
@@ -46,7 +50,7 @@ fun ClientScreen(
                 )
             }
         ) {
-            // Add tabs for all of our pages
+            // Add tabs for all of our pages (2 pages in total here)
             pages.forEachIndexed { index, title ->
                 Tab(
                     text = {
@@ -59,6 +63,7 @@ fun ClientScreen(
                     },
                     selected = pagerState.currentPage == index,
                     onClick = {
+                        // change page when clicking on tab
                         scope.launch {
                             pagerState.animateScrollToPage(index)
                         }
@@ -67,6 +72,7 @@ fun ClientScreen(
             }
         }
 
+        // Pager that shows each page's content
         HorizontalPager(
             count = pages.size,
             state = pagerState,
@@ -75,6 +81,7 @@ fun ClientScreen(
             when (page) {
                 0 -> {
 
+                    // For sorting records before showing
                     val recordSorter = RecordSorter.ClientRecordSorter()
 
                     RecordsList(
@@ -84,6 +91,7 @@ fun ClientScreen(
                     )
                 }
 
+                // For showing service list
                 1 -> ServiceList(
                     services = services,
                     onFinishClicked = onSaveRecord,
@@ -97,6 +105,7 @@ fun ClientScreen(
 
 }
 
+// Client screen preview
 @ExperimentalFoundationApi
 @Preview("ClientScreen")
 @Composable

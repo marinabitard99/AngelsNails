@@ -3,6 +3,7 @@ package com.marinanitockina.angelsnails.mvvm.models
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 
+// Record class
 @IgnoreExtraProperties
 data class Record(
     val id: String? = null,

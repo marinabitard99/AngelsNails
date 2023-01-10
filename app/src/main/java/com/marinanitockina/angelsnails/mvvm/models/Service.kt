@@ -1,5 +1,6 @@
 package com.marinanitockina.angelsnails.mvvm.models
 
+// Service class
 data class Service(
     val id: String? = null,
     val name: String? = null,

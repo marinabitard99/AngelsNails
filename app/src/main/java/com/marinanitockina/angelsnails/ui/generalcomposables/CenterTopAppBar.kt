@@ -17,6 +17,9 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.abs
 import kotlin.math.max
 
+// UI functions for this file were taken from
+// https://gist.github.com/evansgelist/aadcd633e9b160f9f634c16e99ffe163
+
 val AppBarHeight = 56.dp
 val AppBarHorizontalPadding = 4.dp
 val TitleIconModifier = Modifier.fillMaxHeight()
@@ -139,6 +142,7 @@ fun AppBar(
     }
 }
 
+// Extention function for converting to Px
 val Number.toPx get() = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,
     this.toFloat(),

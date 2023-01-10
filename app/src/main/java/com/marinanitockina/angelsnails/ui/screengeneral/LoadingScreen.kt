@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 
+// UI for showing loading animation
 @Composable
 fun LoadingScreen() {
     Box(

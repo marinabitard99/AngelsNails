@@ -27,6 +27,7 @@ import com.marinanitockina.angelsnails.R
 import com.marinanitockina.angelsnails.ui.theme.AngelsNailsTheme
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 
+// UI for login screen
 @Composable
 fun LoginScreen(loginMethod: (AuthCredential) -> Unit = {}, isLoading: Boolean = false) {
 
@@ -55,6 +56,7 @@ fun LoginScreen(loginMethod: (AuthCredential) -> Unit = {}, isLoading: Boolean =
 
 }
 
+// Button that starts log in process
 @Composable
 fun GoogleSignInButton(loginMethod: (AuthCredential) -> Unit = {}) {
     val context = LocalContext.current
@@ -115,6 +117,7 @@ fun GoogleSignInButton(loginMethod: (AuthCredential) -> Unit = {}) {
 
 }
 
+// Login screen preview
 @Preview(name = "Login screen", showBackground = true)
 @Composable
 fun LoginScreenPreview() {
@@ -123,6 +126,7 @@ fun LoginScreenPreview() {
     }
 }
 
+// Google Button preview
 @Preview(name = "Google Button", showBackground = true)
 @Composable
 fun GoogleButtonPreview() {

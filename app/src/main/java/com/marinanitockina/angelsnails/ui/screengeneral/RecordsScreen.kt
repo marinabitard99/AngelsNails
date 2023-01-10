@@ -31,6 +31,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+// UI for showing list of records
 @ExperimentalFoundationApi
 @Composable
 fun RecordsList(
@@ -39,6 +40,7 @@ fun RecordsList(
     dateText: String = "",
     onDeleteRecord: (String, UserState.Role) -> Unit = { _, _ -> }
 ) {
+    // Show empty records list when there's no records to show
     if (records.isEmpty()) {
         if (role == UserState.Role.CLIENT) {
             EmptyRecordsList()
@@ -47,6 +49,7 @@ fun RecordsList(
         }
     } else {
 
+        // Show sorted records grouped by current time
         LazyColumn(
             modifier = Modifier
                 .fillMaxHeight()
@@ -71,6 +74,7 @@ fun RecordsList(
     }
 }
 
+// Sticky holder for records list
 @Composable
 fun RecordHeader(isUpcoming: Boolean = true) {
     Text(
@@ -90,12 +94,14 @@ fun RecordItem(
     role: UserState.Role = UserState.Role.CLIENT,
     onDeleteRecord: (String, UserState.Role) -> Unit = { _, _ -> }
 ) {
+    // Formatting record's date
     val formatter: DateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
     formatter.timeZone = TimeZone.getDefault()
     val dateString = formatter.format(Date(record!!.time!!))
 
     val currentTime = System.currentTimeMillis()
 
+    // Card for all record info
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -107,12 +113,14 @@ fun RecordItem(
             color = DarkPink
         )
     ) {
+        // In a column showing 3 rows of information
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp, vertical = 15.dp)
         ) {
 
+            // 1st row - showing name of procedure and option for removing upcoming records
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -171,6 +179,7 @@ fun RecordItem(
 
             }
 
+            // 2nd row - showing location and master's name for admin
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
@@ -196,6 +205,9 @@ fun RecordItem(
 
             }
 
+            // 3rd row:
+            // For client - showing master's name, master's phone and procedure's price
+            // For others - showing client's name, phone number/email and procedure's price
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
@@ -228,6 +240,7 @@ fun RecordItem(
     }
 }
 
+// Preview of a record for clients
 @Preview("ClientRecord")
 @Composable
 fun ClientRecordPreview() {
@@ -246,6 +259,7 @@ fun ClientRecordPreview() {
     )
 }
 
+// Preview of a record for masters
 @Preview("MasterRecord")
 @Composable
 fun MasterRecordPreview() {
@@ -264,6 +278,7 @@ fun MasterRecordPreview() {
     )
 }
 
+// Preview of a record for admins
 @Preview("AdminRecord")
 @Composable
 fun AdminRecordPreview() {

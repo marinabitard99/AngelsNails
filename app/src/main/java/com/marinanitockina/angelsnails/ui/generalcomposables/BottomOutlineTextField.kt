@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 
+// The code taken from
 // https://stackoverflow.com/questions/68600128/remove-default-padding-on-jetpack-compose-textfield
 @Composable
 fun BottomOutlineTextField(

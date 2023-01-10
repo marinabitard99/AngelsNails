@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 import com.marinanitockina.angelsnails.ui.theme.Pink100
 
+// UI for text styled as a chip
 @Composable
 fun Chip(
     modifier: Modifier = Modifier,
@@ -40,6 +41,7 @@ fun Chip(
     }
 }
 
+// UI for Button styled as a chip
 @Composable
 fun ChipButton(text: String, modifier: Modifier = Modifier, onClickAction: () -> Unit = {}) {
     OutlinedButton(
@@ -58,12 +60,14 @@ fun ChipButton(text: String, modifier: Modifier = Modifier, onClickAction: () ->
     }
 }
 
+// Chip preview
 @Preview("Chip")
 @Composable
 fun ChipPreview() {
     Chip(text = "25.00 €")
 }
 
+// Chip button preview
 @Preview("ChipButton")
 @Composable
 fun ChipButtonPreview() {

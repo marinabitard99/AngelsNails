@@ -50,6 +50,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+// UI for master item
 @Composable
 fun MasterItem(
     serviceId: String = "",
@@ -62,6 +63,7 @@ fun MasterItem(
     onFinishClicked: (Record) -> Unit = {}
 ) {
 
+    // state for allowing Clients to select master's card
     val expandable = remember {
         role == UserState.Role.CLIENT
     }
@@ -72,6 +74,7 @@ fun MasterItem(
         animateIntAsState(70)
     }
 
+    // Master's card
     Card(
         shape = RoundedCornerShape(25.dp),
         modifier = Modifier
@@ -85,6 +88,7 @@ fun MasterItem(
             modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)
         ) {
             Box {
+                // Top row for showing master's image, name and expandable button (if user is a client)
                 Row(
                     modifier = Modifier
                         .align(Alignment.TopStart)
@@ -116,6 +120,7 @@ fun MasterItem(
                     )
                 }
 
+                // If user is a client, it's possible to extend the card, by clicking on button
                 if (expandable) {
                     OutlinedButton(
                         onClick = { if (expanded) onSelectClicked(null) else onSelectClicked(master.second.name) },
@@ -135,7 +140,9 @@ fun MasterItem(
 
             }
 
+            // If user is a client, it's possible to extend the card, by clicking on button
             if (expandable) {
+                // Animation for expanding master's card
                 AnimatedVisibility(
                     visible = expanded,
                     enter = expandVertically(),
@@ -145,15 +152,20 @@ fun MasterItem(
                         .padding(top = 10.dp)
                 ) {
 
+                    // Column that contains user's selected date and time for the next procedure
                     Column {
 
+                        // state for storing selected date
                         var date: String? by remember { mutableStateOf(null) }
+                        // state for storing selected time
                         var time: String? by remember { mutableStateOf(null) }
 
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                         ) {
+                            // Row that contains date icon, and outlined text that shows date picker
+                            // upon clicking on it
                             Row(modifier = Modifier.align(Alignment.TopStart)) {
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_baseline_event_24),
@@ -226,6 +238,8 @@ fun MasterItem(
                                 )
                             }
 
+                            // Row that contains clock icon, and outlined text that shows time picker
+                            // upon clicking on it
                             Row(modifier = Modifier.align(Alignment.TopEnd)) {
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_outline_access_time_24),
@@ -295,8 +309,10 @@ fun MasterItem(
                         }
 
                         val context = LocalContext.current
+                        // State of confirmation dialog
                         val confirmDialogState = rememberMaterialDialogState()
 
+                        // Confirmation dialog that finishes reservation
                         MaterialDialog(
                             dialogState = confirmDialogState,
                             buttons = {
@@ -349,6 +365,8 @@ fun MasterItem(
                             message("After submitting, please wait for the confirmation letter on your email.")
                         }
 
+                        // Button that gets enabled upon inputting necessary reservation information
+                        // and shows confirmation dialog to finish the record
                         OutlinedButton(
                             onClick = {
 

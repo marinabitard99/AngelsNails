@@ -31,6 +31,7 @@ import com.marinanitockina.angelsnails.ui.theme.Pink50
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 
+// UI for showing list of services
 @ExperimentalFoundationApi
 @Composable
 fun ServiceList(
@@ -41,6 +42,7 @@ fun ServiceList(
     CompositionLocalProvider(
         LocalOverScrollConfiguration provides null
     ) {
+        // List of services
         LazyColumn(
             modifier = Modifier.padding(
                 start = 10.dp,
@@ -56,6 +58,7 @@ fun ServiceList(
     }
 }
 
+// UI for service
 @Composable
 fun ServiceItem(
     service: Service? = Service(),
@@ -63,13 +66,16 @@ fun ServiceItem(
     role: UserState.Role = UserState.Role.CLIENT
 ) {
 
+    // state for calculating master's item heights
     val expandable = remember {
         role == UserState.Role.CLIENT
     }
 
+    // state for clicking on service cards
     val extended = remember { mutableStateOf(false) }
     val scale = animateFloatAsState(if (extended.value) 0.95f else 1f)
 
+    // Service's container
     Card(shape = RoundedCornerShape(25.dp),
         modifier = Modifier
             .scale(scale.value),
@@ -77,6 +83,8 @@ fun ServiceItem(
             extended.value = !extended.value
         }
     ) {
+        // Box with image in the background, price in top left corner
+        // and procedure's name in bottom right corner
         Box {
             GlideImage(
                 imageModel = service?.pictureUrl,
@@ -107,6 +115,7 @@ fun ServiceItem(
         }
     }
 
+    // Service card's animation for showing list of masters
     AnimatedVisibility(
         visible = extended.value,
         enter = expandVertically(),
@@ -124,7 +133,9 @@ fun ServiceItem(
                 modifier = Modifier.padding(start = 9.dp)
             )
 
+            // state of selected master's card
             val expandedItem: MutableState<String?> = remember { mutableStateOf(null) }
+            // height of selected/not selected master's card
             val expandedListHeight = animateIntAsState(
                 if (!expandable) {
                     ((service?.masters?.size ?: 0) * 70)
@@ -136,6 +147,7 @@ fun ServiceItem(
 
             )
 
+            // List of service's masters with determined height
             LazyColumn(
                 modifier = Modifier.height(
                     expandedListHeight.value.dp
@@ -163,6 +175,7 @@ fun ServiceItem(
 
 }
 
+// Preview of service list
 @ExperimentalFoundationApi
 @Preview("ServiceList")
 @Composable
@@ -186,6 +199,7 @@ fun ServiceListPreview() {
     )
 }
 
+// Preview of service card
 @Preview("Service")
 @Composable
 fun ServiceItemPreview() {

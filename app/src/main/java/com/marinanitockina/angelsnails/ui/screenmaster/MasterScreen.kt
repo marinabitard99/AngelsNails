@@ -29,6 +29,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+// UI for showing master's screen
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun MasterScreen(
@@ -36,8 +37,10 @@ fun MasterScreen(
     onDeleteRecord: (String, UserState.Role) -> Unit = { _, _ -> }
 ) {
 
+    // state for datepicker dialog
     val dateDialogState = rememberMaterialDialogState()
 
+    // calendar for showing selected date, today's by default
     val calendar: Calendar by remember { mutableStateOf(Calendar.getInstance()) }
     calendar.set(Calendar.HOUR_OF_DAY, 0)
     calendar.set(Calendar.MINUTE, 0)
@@ -47,9 +50,11 @@ fun MasterScreen(
     val df = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     var formattedDate: String by remember { mutableStateOf(df.format(calendar.time)) }
 
+    // creates a PagerState that is remembered across compositions
     val pagerState = rememberPagerState()
     val pages = listOf("Records on $formattedDate")
 
+    // Datepicker dialog
     MaterialDialog(
         dialogState = dateDialogState,
         buttons = {
@@ -86,6 +91,7 @@ fun MasterScreen(
             )
         ) { selectedDate ->
 
+            //setting calendar for showing selected date
             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             val dateAsString = selectedDate.format(formatter)
 
@@ -101,6 +107,7 @@ fun MasterScreen(
         }
     }
 
+    // Column that contains TabRow and HorizontalPager
     Column {
         TabRow(
             selectedTabIndex = pagerState.currentPage,
@@ -111,7 +118,8 @@ fun MasterScreen(
                 )
             }
         ) {
-            // Add tabs for all of our pages
+            // Add tabs for all of our pages (only one here)
+            // shows date picker dialog when clicked
             pages.forEachIndexed { index, title ->
                 Tab(
                     text = {
@@ -130,6 +138,7 @@ fun MasterScreen(
             }
         }
 
+        // We have only 1 page for masters
         HorizontalPager(
             count = pages.size,
             state = pagerState,
@@ -138,6 +147,7 @@ fun MasterScreen(
             when (page) {
                 0 -> {
 
+                    // In records list show sorted records by day
                     val recordSorter = RecordSorter.DayRecordSorter()
 
                     RecordsList(

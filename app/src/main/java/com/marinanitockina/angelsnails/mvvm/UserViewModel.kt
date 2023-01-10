@@ -30,6 +30,7 @@ class UserViewModel : ViewModel() {
     var masterListState = mutableStateMapOf<String, ServiceMaster?>()
         private set
 
+    // Upon initiating setting callbacks in repository for changing app states
     init {
         repository.userCallback = { user ->
             val role = when (user?.role) {
@@ -83,6 +84,7 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    // Tries to sign in a user with the given AuthCredential
     fun signWithCredential(credential: AuthCredential) {
         viewModelScope.launch {
             try {
@@ -95,17 +97,20 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    // For getting all user information from the database
     fun fetchUserRole(email: String) {
         loadingState.value = true
         repository.getUserInfo(email)
     }
 
+    // For saving new record in the database
     fun saveRecord(record: Record) {
         loadingState.value = true
         repository.saveRecord(record)
         repository.getClientRecords(FirebaseAuth.getInstance().currentUser!!.email!!)
     }
 
+    // For removing selected record from the database
     fun deleteRecord(recordId: String, role: UserState.Role) {
         repository.deleteRecord(recordId)
         when (role) {
@@ -118,6 +123,7 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    // For clearing all app states and returning to login screen
     fun clearUserData() {
         accountState.value = null
         serviceState.clear()

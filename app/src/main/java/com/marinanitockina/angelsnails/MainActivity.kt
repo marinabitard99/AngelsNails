@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<UserViewModel>()
 
+    // App starting point
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,6 +32,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    // Sets firebase auth listener and changes user state
     private fun setFirebaseAuthStateListener() {
         FirebaseAuth.getInstance().addAuthStateListener { auth ->
 
@@ -48,17 +50,20 @@ class MainActivity : ComponentActivity() {
 
 }
 
+// App's main UI composable
 @ExperimentalFoundationApi
 @Composable
 fun AppScreen(viewModel: UserViewModel = UserViewModel()) {
     Surface(color = MaterialTheme.colors.background) {
         val currentUser = viewModel.accountState.value
         if (currentUser == null) {
+            // Show login screen when user is not logged in
             LoginScreen(
                 loginMethod = viewModel::signWithCredential,
                 isLoading = viewModel.loadingState.value
             )
         } else {
+            // Show signed in screen when user is logged in
             SignedInScreen(
                 isLoading = viewModel.loadingState.value,
                 userState = currentUser,

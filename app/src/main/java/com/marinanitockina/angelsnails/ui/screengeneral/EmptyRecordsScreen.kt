@@ -16,6 +16,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.marinanitockina.angelsnails.R
 import com.marinanitockina.angelsnails.ui.theme.DarkPink
 
+// UI to notify user about lack of records
 @Composable
 fun EmptyRecordsList(caption: String = "No records yet!") {
     Box(
@@ -23,6 +24,7 @@ fun EmptyRecordsList(caption: String = "No records yet!") {
             .fillMaxSize()
             .padding(horizontal = 20.dp)
     ) {
+        // Column with animation and text
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -43,6 +45,7 @@ fun EmptyRecordsList(caption: String = "No records yet!") {
     }
 }
 
+// Preview for showing Empty Records UI
 @Preview("Empty records")
 @Composable
 fun EmptyRecordsListPreview() {

@@ -10,11 +10,13 @@ import com.marinanitockina.angelsnails.mvvm.models.ServiceMaster
 import com.marinanitockina.angelsnails.mvvm.models.UserState
 import com.marinanitockina.angelsnails.ui.screengeneral.MasterItem
 
+// UI for showing list of all masters
 @Composable
 fun MastersList(
     masters: Map<String, ServiceMaster?> = emptyMap(),
     role: UserState.Role = UserState.Role.ADMIN
 ) {
+    // List that shows all masters
     LazyColumn(
         modifier = Modifier.padding(
             start = 10.dp,

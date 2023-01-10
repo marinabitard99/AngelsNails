@@ -41,8 +41,10 @@ fun AdminScreen(
     onDeleteRecord: (String, UserState.Role) -> Unit = { _, _ -> }
 ) {
 
+    // state for datepicker dialog
     val dateDialogState = rememberMaterialDialogState()
 
+    // calendar for showing selected date, today's by default
     val calendar: Calendar by remember { mutableStateOf(Calendar.getInstance()) }
     calendar.set(Calendar.HOUR_OF_DAY, 0)
     calendar.set(Calendar.MINUTE, 0)
@@ -54,10 +56,12 @@ fun AdminScreen(
 
     var openCalendar = false
 
+    // creates a PagerState that is remembered across compositions
     val pagerState = rememberPagerState()
     val pages = mutableListOf(formattedDate, "Masters", "Services")
     val scope = rememberCoroutineScope()
 
+    // Datepicker dialog
     MaterialDialog(
         dialogState = dateDialogState,
         buttons = {
@@ -94,6 +98,7 @@ fun AdminScreen(
             )
         ) { selectedDate ->
 
+            //setting calendar for showing selected date
             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             val dateAsString = selectedDate.format(formatter)
 
@@ -109,6 +114,7 @@ fun AdminScreen(
         }
     }
 
+    // Make possible to open calendar when first page is selected, and change first tab's name
     when (pagerState.currentPage) {
         0 -> {
             openCalendar = true
@@ -124,6 +130,7 @@ fun AdminScreen(
         }
     }
 
+    // Column that contains TabRow and HorizontalPager
     Column {
         TabRow(
             selectedTabIndex = pagerState.currentPage,
@@ -134,7 +141,8 @@ fun AdminScreen(
                 )
             }
         ) {
-            // Add tabs for all of our pages
+            // Add tabs for all of our pages (three here)
+            // shows date picker dialog when clicked
             pages.forEachIndexed { index, title ->
                 Tab(
                     text = {
@@ -159,14 +167,17 @@ fun AdminScreen(
             }
         }
 
+        // We have 3 pages for masters
         HorizontalPager(
             count = pages.size,
             state = pagerState,
             verticalAlignment = Alignment.Top
         ) { page ->
             when (page) {
+                // Records page
                 0 -> {
 
+                    // In records list show sorted records by day
                     val recordSorter = RecordSorter.DayRecordSorter()
 
                     RecordsList(
@@ -180,9 +191,11 @@ fun AdminScreen(
                     )
                 }
                 1 -> {
+                    // Masters page
                     MastersList(masters = masters, role = UserState.Role.ADMIN)
                 }
                 2 -> {
+                    // Service page
                     ServiceList(services = services, role = UserState.Role.ADMIN)
                 }
             }
